@@ -1,0 +1,20 @@
+.card{
+    margin-right: 70px;
+    margin-left: 70px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+.container{
+    display: flex;
+flex-wrap: wrap;
+
+}  
+.fa-solid:hover{
+    cursor: pointer;
+  }
+  
+  .modal-backdrop {
+    opacity: 0.5; /* set the opacity of the backdrop */
+    background-color: black; /* set the background color of the backdrop */
+  }
+  

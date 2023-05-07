@@ -1,0 +1,45 @@
+**Folder Structure**
+Business Spot/
+├── client/
+|   ├── node_modules/
+|   ├── package.json
+|   ├── package-lock.json
+|   ├── .gitignore
+|   ├── public/
+|   ├── src/
+│   |    ├── admin/
+│   |    │   ├── components/
+│   |    │   ├── pages/
+│   |    │   ├── App.js
+│   |    │   ├── Admin.js
+|   |    |   ├── ...
+│   |    ├── user/
+│   |    │   ├── components/
+│   |    │   ├── pages/
+│   |    │   ├── App.js
+│   |    │   ├── User.js
+|   |    |   ├── ...
+│   |    ├── shared/
+│   |    │   ├── components/
+│   |    │   ├── layouts/
+│   |    │   ├── images/
+│   |    │   ├── styles/
+│   |    │   └── utils/
+|   |    |   ├── ...
+│   |    ├── App.js
+│   |    └── index.js
+├── server/
+│   ├── DB_connection/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Routes/
+│   ├── Middleware/
+│   ├── Utils/
+│   ├── node_modules/
+│   ├── config/
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── .env
+│   ├── app.js
+│   └── server.js
+└── README.md
