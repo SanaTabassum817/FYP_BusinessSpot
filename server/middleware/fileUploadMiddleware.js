@@ -2,6 +2,7 @@ const { S3Client} = require("@aws-sdk/client-s3");
 const multer = require('multer');
 var multerS3 = require("multer-s3");
 const path = require("path")
+const { v4: uuidv4 } = require('uuid');
 // var multerS3 = require("multer-s3-v2");
 
 
@@ -23,6 +24,7 @@ const s3Storage = multerS3({
       cb(null, {fieldname: file.fieldname})
   },
   key: (req, file, cb) => {
+      const fileKey = `${uuidv4()}_${file.originalname}`;
       const fileName = Date.now() + "_" + file.fieldname + "_" + file.originalname;
       cb(null, fileName);
   },

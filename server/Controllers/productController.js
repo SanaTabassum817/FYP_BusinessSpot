@@ -31,8 +31,9 @@ const getAllProducts=async(req,res)=>{
 
 const addNewProduct=async(req,res)=>{
     try {
-      // console.log(req.files);
-      const productImages  = req.files.map(file => file.location);
+      const productImages = req.files.map((file) => file.location);
+      console.log(productImages);
+      // const productImages  = req.files.map(file => file.location);
       const { productName, productDescription, productCategory, productSubCategory, productPrice } = req.body;
       // console.log(productImages);
       const product = new productModel({

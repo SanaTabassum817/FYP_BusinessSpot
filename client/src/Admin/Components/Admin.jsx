@@ -5,7 +5,6 @@ import { useCookies } from 'react-cookie';
 import Navbar from "./Navbar"
 import Dashboard from "./Dashboard"
 import AddNewProduct from "./AddNewProduct";
-import Products from "./Products";
 import Category from "./Category";
 import SidebarComponent from "./SidebarComponent";
 import '../../Shared/styles/admin.css';
@@ -115,7 +114,6 @@ const App = () => {
               <Route path="/" element={<Dashboard isLoggedin={isLoggedin} alert={alert} />} />
               <Route path="/addNewProduct" element={<AddNewProduct isLoggedin={isLoggedin} categoryList={categoryList} showAlert={showAlert}/>} />
               <Route path="/categories/:categoryName" element={<Category isLoggedin={isLoggedin} categoryList={categoryList}/>} />
-              <Route path="/products" element={<Products isLoggedin={cookies.jwt} />} />
               <Route path="/*" element={<ErrorPage />} />
             </Routes>
           </div>

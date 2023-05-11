@@ -1,0 +1,14 @@
+.content{
+  /* border:1px solid red; */
+  width: 85%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+header{
+  /* border: 1px solid red; */
+  text-align: center;
+}
+
+.hidden .ant-form-item-label{
+  visibility: hidden;
+}

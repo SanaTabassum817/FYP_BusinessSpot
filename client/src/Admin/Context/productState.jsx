@@ -64,7 +64,7 @@ const ProductState = (props) => {
   }
 
   // // Add a Product
-  const addProduct = async (newProduct) => {
+const addProduct = async (newProduct) => {
     try {
       const formData = new FormData();
       formData.append('productName', newProduct.productName);
@@ -72,9 +72,11 @@ const ProductState = (props) => {
       formData.append('productPrice', newProduct.productPrice);
       formData.append('productCategory', newProduct.productCategory);
       formData.append('productSubCategory', newProduct.productSubCategory);
-      for(let i = 0; i < newProduct.productImages.length; i++) {
-        formData.append('productImages', newProduct.productImages[i]);
-      }
+      Array.from(newProduct.productImages).forEach((imageFile, index) => {
+        console.log(imageFile);
+        formData.append(`productImages`, imageFile.originFileObj);
+      });
+  
       // API CALL
       const response = await axios.post(`${host}/addNewProduct`, formData, {
         headers: {
@@ -95,7 +97,7 @@ const ProductState = (props) => {
       console.log(error);
       return false;
     }
-  };
+};
 
 
   // Delete a Note

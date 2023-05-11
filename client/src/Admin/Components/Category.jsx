@@ -2,7 +2,7 @@ import React from 'react';
 import { useCookies } from 'react-cookie';
 import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router';
-import Products from './Products';
+import ProductsPage from './ProductsPage';
 import ErrorPage from './ErrorPage';
 const Category = (props) => {
   
@@ -12,8 +12,6 @@ const Category = (props) => {
   }
   console.log("category page called");
   const { categoryName } = useParams();
-  // console.log(categoryName);
-  // console.log(props.categoryList);
   const categoryExists = props.categoryList.find((item) => item.category === categoryName);
 
   if(!categoryExists){
@@ -21,9 +19,7 @@ const Category = (props) => {
       return (<ErrorPage/>);
   }
   return (
-    <div>
-     <Products productCategory={categoryName}></Products>
-    </div>
+      <ProductsPage productCategory={categoryName} categoryList={props.categoryList}></ProductsPage>
   )
 }
 
