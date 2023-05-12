@@ -1,25 +1,14 @@
 import React from 'react';
-import { useCookies } from 'react-cookie';
-import { useParams } from 'react-router-dom';
-import { Navigate } from 'react-router';
+import { useContext,} from 'react';
+import { useParams,Navigate } from 'react-router-dom';
 import ProductsPage from './ProductsPage';
 import ErrorPage from './ErrorPage';
-const Category = (props) => {
-  
-  const [cookies] = useCookies(['jwt']);
-  if (!props.isLoggedin && !cookies.jwt) {
-    return <Navigate to="/login? You are not logged in. Please login first." />;
-  }
-  console.log("category page called");
-  const { categoryName } = useParams();
-  const categoryExists = props.categoryList.find((item) => item.category === categoryName);
+import CategoriesContext from "../Context/CategoriesContext";
 
-  if(!categoryExists){
-      console.log("invalid category");
-      return (<ErrorPage/>);
-  }
+const Category = (props) => {
+  const { categoryName } = useParams();
   return (
-      <ProductsPage productCategory={categoryName} categoryList={props.categoryList}></ProductsPage>
+      <ProductsPage productCategory={categoryName}></ProductsPage>
   )
 }
 

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
 import { NavLink } from 'react-router-dom'
 import Header from './Header'
+import "../../Shared/styles/changePassword.css"
 
 const ChangePassword = (props) => {
 
@@ -84,59 +85,44 @@ const ChangePassword = (props) => {
 
   return (
     <>
-      {/* <div className="d"> */}
       <Header alert={props.alert} />
+      <div className='content-warapper'>
         <div className="d1resetpass" >
-    <div className='quote'>
+          <div className='quote'>
             <h4 className='quote'>Welcome</h4>
             <span > We exist to make entrepreneurship easier.</span>
           </div>
-      </div>
+        </div>
         <div className="d2" >
-        <div className="card">
+          <div className="card">
             <div className="card-body py-5 px-md-5">
               <form onSubmit={onSubmitEventHandler}>
                 <header className='card-heading'>Reset Password</header>
-               <div className="form-outline mb-3">
- <input className="form-control form-control-lg " type="password" name='password' placeholder='Enter 8 digit password' id='form3Example3' onChange={onChangeEventHandler} />
+                <div className="form-outline mb-3">
+                  <input className="form-control form-control-lg " type="password" name='password' placeholder='Enter 8 digit password' id='form3Example3' onChange={onChangeEventHandler} />
                   <label className="form-label" htmlFor="form3Example3"> <i className="fas fa-lock"></i> &nbsp; Password</label>
                   <div>  <span className="error" id='errorPassword'>{msg.password}</span></div>
                 </div>
-
                 <div className="form-outline mb-3">
-  <input className="form-control form-control-lg" type="password" name='cPassword' placeholder='Enter confirm password' id='form3Example3' onChange={onChangeEventHandler} />
+                  <input className="form-control form-control-lg" type="password" name='cPassword' placeholder='Enter confirm password' id='form3Example3' onChange={onChangeEventHandler} />
                   <label className="form-label" htmlFor="form3Example3"> <i className="fas fa-lock"></i> &nbsp; Confirm Password</label>
                   <div>  <span className="error" id='errorCPassword'>{msg.cPassword}</span></div>
                 </div>
-
                 <div className="text-center text-lg-start  pt-2">
                   <button type="submit" className="btn btn-primary btn-lg "
                     style={{ PaddingLeft: "2.5rem", PaddingRight: "2.5rem" }}
                   >Change Password</button>
-
                 </div>
-
                 <div className="d-flex justify-content-between align-items-center">
- <p className="medium fw-bold mt-2 pt-1 mb-0">Back to login? <NavLink to="/login"
+                  <p className="medium fw-bold mt-2 pt-1 mb-0">Back to login? <NavLink to="/login"
                     className="link-danger"> &nbsp; Login</NavLink></p>
                 </div>
-
-                {/* {
-                  msg.errorMsg !== "" ?
-                    (<span className='error'>{msg.errorMsg}</span>) : null
-                }
-                {
-                  msg.successMsg !== "" ?
-                    (<span className='success'>{msg.successMsg}</span>) : null
-                } */}
-
               </form>
             </div>
           </div>
-  {/* </div> */}
-    </div>
-  <Footer />
-
+        </div>
+        <Footer />
+      </div>
     </>
   )
 }

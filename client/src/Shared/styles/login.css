@@ -1,0 +1,42 @@
+.content-warapper{
+    /* border: 1px solid red; */
+    display: flex;
+    height: calc(100vh - 130px);
+}
+.d2{
+    /* border:1px solid green; */
+    width: 50%;
+    align-content: center;
+}
+.card{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    /* border:1px solid red; */
+}
+.d1login{
+    /* border: 1px solid blue; */
+    width: 50%;
+    
+    background-image: url('../images/login.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 420px 360px ;
+}
+
+@media (max-width: 600px) {
+    .content-warapper {
+      display: block;
+      overflow-y: auto;
+      /* Additional styles specific to smaller screens */
+    }.d2{
+        width: 100%;
+        height: fit-content;
+    }
+    .d1login{
+        margin-top: 30px;
+        width: 100%;
+        height: 100%;
+    }
+  }

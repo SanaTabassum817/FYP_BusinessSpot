@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import validator from 'validator'
 import Footer from './Footer'
 import Header from './Header'
-
+import "../../Shared/styles/signup.css"
 const Signup = (props) => {
 
 
@@ -108,10 +108,8 @@ const Signup = (props) => {
 
   return (
     <>
-
-      {/* <div className="d"> */}
       <Header alert={props.alert} />
-
+      <div className='content-warapper'>
       <div className="d1signup" >
         <div className='quote'>
           <h4 className='quote'>Welcome</h4>
@@ -158,24 +156,11 @@ const Signup = (props) => {
                 <p className="medium fw-bold mt-2 pt-1 mb-0">Already have an account? <NavLink to="/login"
                   className="link-danger">Login</NavLink></p>
               </div>
-              {/* 
-                {
-                  msg.errorMsg !== "" ?(<span className='error'>{msg.errorMsg}</span>) : null
-                }
-                {
-                  msg.successMsg !== "" ?
-                    (<span className='success'>{msg.successMsg}</span>) : null
-                } */}
-
             </form>
           </div>
         </div>
-
-        {/* </div> */}
-
-
       </div>
-
+      </div>
 
       <Footer />
 

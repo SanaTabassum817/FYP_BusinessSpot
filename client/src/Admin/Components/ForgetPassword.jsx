@@ -3,7 +3,7 @@ import validator from 'validator'
 import { NavLink } from 'react-router-dom'
 import Footer from './Footer'
 import Header from './Header'
-
+import "../../Shared/styles/forgetPassword.css"
 
 const ForgetPassword = (props) => {
   const error = {
@@ -71,9 +71,8 @@ const ForgetPassword = (props) => {
 
   return (
     <>
-      {/* <div className="d"> */}
-
       <Header alert={props.alert} />
+      <div className='content-warapper'>
       <div className="d2" >
         <div className="card">
           <div className="card-body py-5 px-md-5">
@@ -95,34 +94,19 @@ const ForgetPassword = (props) => {
                 <p className="medium fw-bold mt-2 pt-1 mb-0"> Back to login? <NavLink to="/login"
                   className="link-danger">&nbsp; Login</NavLink></p>
               </div>
-
-              {/* {
-                msg.errorMsg !== "" ?
-                  (<span className='error'>{msg.errorMsg}</span>) : null
-              }
-              {
-                msg.successMsg !== "" ?
-                  (<span className='success'>{msg.successMsg}</span>) : null
-              } */}
-
             </form>
           </div>
         </div>
-        {/* </div> */}
+        
       </div>
       <div className="d1forget" >
         <div className='quote'>
           <h4 className='quote'>Welcome</h4>
           <span > We exist to make entrepreneurship easier.</span>
         </div>
-
-
-
       </div>
       <Footer />
-      {/* </div> */}
-
-
+      </div>
     </>
   )
 }

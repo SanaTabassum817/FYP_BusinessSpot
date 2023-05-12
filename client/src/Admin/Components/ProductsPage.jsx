@@ -3,22 +3,17 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import React, { useContext} from "react";
 import productContext from "../Context/ProductContext";
 import { useState, useEffect } from "react";
-import { Navigate } from "react-router";
-import { useCookies } from "react-cookie";
-// import ProductDetailsModal from './ProductDetailsModal';
 import EditProductModal from './EditProductModal';
 import "../../Shared/styles/productsPage.css"
+import CategoriesContext from "../Context/CategoriesContext";
 
 const { Meta } = Card;
 
 export default function ProductsPage(props) {
     const context = useContext(productContext);
+    const categoryContext = useContext(CategoriesContext);
+    const { categories} = categoryContext // destructuring
     const { products, getProducts, getProductsByCategory,deleteProduct} = context; // destructuring
-    
-    const [cookies] = useCookies(["jwt"]);
-    if (!props.isLoggedin && !cookies.jwt) {
-        return <Navigate to="/login? You are not logged in. Please login first." />;
-    }
 
     // const [modalVisible, setModalVisible] = useState(false);
     // const openModal = (product) => {
@@ -36,14 +31,15 @@ export default function ProductsPage(props) {
 
     // calling the getProducts
     useEffect(() => {
+      
         if (props.productCategory) {
-            getProductsByCategory(props.productCategory);
+          getProductsByCategory(props.productCategory);
         } else {
-            getProducts();
+          getProducts();
         }
-    // console.log(products);
+      
     }, [props.productCategory]);
-  
+
     const handleDelete = (productId) => {
       // Handle delete action here
       console.log('Delete product:', productId);
@@ -62,7 +58,7 @@ export default function ProductsPage(props) {
   return (
     
     <div className='product-grid'>
-        {products.map((product) => (
+      {products.map((product) => (
             <Card
                 className="product-card"
                 key={product._id}

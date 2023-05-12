@@ -7,7 +7,7 @@ import "../../Shared/styles/productImageCarousel.css"
 const EditProductModal = ({ visible, onClose, onSave, product }) => {
   const context = useContext(productContext);
   const {editProduct } = context;
-  console.log(product);
+  // console.log(product);
 
   if (!product) {
     return null; // Return null if product is null
@@ -26,11 +26,12 @@ const EditProductModal = ({ visible, onClose, onSave, product }) => {
   };
 
   const renderSubcategoryField = () => {
-    const hasSubcategory = product.productSubCategory && product.productSubCategory!="null" &&product.productSubCategory!='';
+    console.log(product.productSubCategory);
+    const hasSubcategory = product.productSubCategory && product.productSubCategory!="null" &&product.productSubCategory!='undefined';
     console.log(hasSubcategory);
     if (hasSubcategory) {
       return (
-        <Form.Item name="productSubCategory" noStyle>
+        <Form.Item label="Sub-Category" name="productSubCategory" >
           <Input disabled />
         </Form.Item>
       );
@@ -68,16 +69,10 @@ const EditProductModal = ({ visible, onClose, onSave, product }) => {
             style={{ width: '100%' }}
           />
         </Form.Item>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label="Category" name="productCategory">
-              <Input disabled />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            {renderSubcategoryField()}
-          </Col>
-        </Row>
+        <Form.Item label="Category" name="productCategory">
+          <Input disabled />
+        </Form.Item>
+        {renderSubcategoryField()}
         <Form.Item label="Product Description" name="productDescription" rules={[{ required: true }]}>
           <Input.TextArea />
         </Form.Item>

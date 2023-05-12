@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useContext} from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -6,8 +6,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import CategoriesContext from "../Context/CategoriesContext";
 
 const AddNewCategory=(props)=>{
+
+  const context = useContext(CategoriesContext);
+  const { addCategory } = context; // destructuring
 
     const [category, setCategory] = useState(null);
     const [msg, setMsg] = useState();
@@ -22,23 +26,12 @@ const AddNewCategory=(props)=>{
           setMsg("Category can't be empty");
         }else {
           setMsg(null);
-          //code to save category
-          const response = await fetch("http://localhost:8000/addNewCategory", {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({category:category})
-            });
-          const jsonResponse = await response.json()
-          //If ctegory is successfully added to db --> call the onClose function to close the modal
-          if(jsonResponse._id){
-            props.addCategoryHandler(jsonResponse)
+          const result= await addCategory(category)
+          if(result){
             onClose()
           }
-          //If there is some error while adding the category
           else{
-            setMsg(jsonResponse.error);
+            setMsg("Another category already exists under the same name.");
           }
         }
       }
@@ -54,11 +47,11 @@ const AddNewCategory=(props)=>{
       const onClose = () => {
         setMsg(null);
         setCategory(null);
-        props.onClose();
+        props.closeModal();
       };
 
     return(
-        <Dialog open={props.isOpen} onClose={onClose}>
+        <Dialog open={props.open} onClose={onClose}>
             <DialogTitle>Add New Category</DialogTitle>
             <DialogContent>
             <DialogContentText>

@@ -29,7 +29,7 @@ const addNewCategory=async (req,res)=>{
 //Controller 2:
 const getCategories=async (req,res)=>{
     const result1=await categoryModel.find({})
-    res.send(result1);
+    res.status(200).send(result1);
 
 }
 module.exports.addNewCategory=addNewCategory;

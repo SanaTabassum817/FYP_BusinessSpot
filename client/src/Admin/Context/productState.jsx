@@ -12,6 +12,7 @@ const ProductState = (props) => {
   //Get all productsf
   const getProducts = async () => {
     // API CALL
+    setProducts([])
     try {
       const response = await fetch(`${host}/getProducts`, {
         method: 'GET',
@@ -40,7 +41,7 @@ const ProductState = (props) => {
   // Get Products by category
   const getProductsByCategory = async (productCategory) => {
     try {
-      
+        setProducts([])
         // API CALL
         const response = await fetch(`${host}/getProductsByCategory/${productCategory}`, {
           method: 'GET',
@@ -52,11 +53,12 @@ const ProductState = (props) => {
         // Client side
         const jsonResponse = await response.json();
         console.log(jsonResponse);
-        if(jsonResponse.error){
-          console.log(jsonResponse.error)
-        }else{
+        if (jsonResponse && jsonResponse.length > 0) {
           setProducts(jsonResponse);
           console.log(products);
+        }
+        else if(jsonResponse.error){
+          console.log(jsonResponse.error)
         }
     } catch (error) {
       console.error(error);

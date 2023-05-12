@@ -1,0 +1,41 @@
+/*---------------- header-------------------  */
+.header{
+    height: 70px;
+    /* border: 1px solid blue; */
+}
+.logoText
+{
+    margin-top: 5px;
+    margin-left: 50px; 
+    color: #002366;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    margin-bottom: 0%;
+    font-weight: bold;
+}
+.tagline
+{
+
+    margin-left: 50px;
+    color: #002366;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    margin-bottom: 0px;
+
+}
+.logo{
+    color: #007bff;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-weight: bold;
+    margin-top: 20px;
+  
+}
+
+/*-------------------- footer ------------------  */
+
+.inner-footer{
+    height: 60px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* border: 1px solid red; */
+}

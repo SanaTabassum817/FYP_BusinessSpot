@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import validator from 'validator'
 import Footer from './Footer';
 import Header from './Header';
+import "../../Shared/styles/login.css"
 const Login = (props) => {
   const userInfo = {
     email: "",
@@ -88,7 +89,7 @@ const Login = (props) => {
 
     <>
       <Header alert={props.alert} />
-
+      <div className='content-warapper'>
       <div className="d2" >
         <div className="card">
           <div className="card-body py-5 px-md-5">
@@ -113,7 +114,7 @@ const Login = (props) => {
               </div>
               <div className="d-flex justify-content-between align-items-center">
                 <p className="medium fw-bold mt-2 pt-1 mb-0">Forget Password? <NavLink to="/forgetPassword"
-                  className="link-danger"> &nbsp; Forget Password</NavLink></p>
+                  className="link-danger"> &nbsp; Forget</NavLink></p>
               </div>
 
               <div className="d-flex justify-content-between align-items-center">
@@ -129,6 +130,7 @@ const Login = (props) => {
           <h4 className='quote'>Welcome</h4>
           <span > We exist to make entrepreneurship easier.</span>
         </div>
+      </div>
       </div>
       <Footer />
     </>

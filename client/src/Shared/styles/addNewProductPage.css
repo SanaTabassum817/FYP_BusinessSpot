@@ -1,14 +1,16 @@
-.content{
-  /* border:1px solid red; */
-  width: 85%;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
 header{
   /* border: 1px solid red; */
   text-align: center;
 }
+.product-card{
+  cursor: default; 
+}
+.ant-form-item-label{
+  /* border: 1px solid green; */
+}
 
-.hidden .ant-form-item-label{
-  visibility: hidden;
+.save-btn-warapper{
+  /* border: 1px solid red; */
+  /* text-align: right; */
+  /* margin-right: ; */
 }

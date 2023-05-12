@@ -1,13 +1,11 @@
 import React from "react"
-import { Route, Routes, BrowserRouter,Navigate } from "react-router-dom"
-import { useState, useEffect } from "react";
+import { Route, Routes, BrowserRouter,Navigate,useParams} from "react-router-dom"
+import { useState, useEffect,useContext } from "react";
 import { useCookies } from 'react-cookie';
-import Navbar from "./Navbar"
 import Dashboard from "./Dashboard"
 import AddNewProduct from "./AddNewProduct";
 import Category from "./Category";
-import SidebarComponent from "./SidebarComponent";
-import '../../Shared/styles/admin.css';
+import AdminSidebar from "./AdminSidebar";
 import Signup from "./Signup";
 import Login from './Login'
 import ErrorPage from "./ErrorPage"
@@ -15,16 +13,58 @@ import VerifyUser from "./VerifyUser";
 import ForgetPassword from "./ForgetPassword";
 import ChangePassword from "./ChangePassword";
 import ProductState from "../Context/productState"
-import "../../Shared/styles/dashborad.css"
+import AdminNavbar from "./AdminNavbar";
+import CategoriesContext from "../Context/CategoriesContext";
+import '../../Shared/styles/admin.css';
+
 const App = () => {
 
-  const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
-  //----------------- States -----------------------
-  const [isLoggedin, setIsLoggedin] = useState(false);
-  const [alert, setAlert] = useState(null);
+  
+  //----------------- User Authentication -----------------------
+  const context = useContext(CategoriesContext);
+  const { getCategories,categories } = context;
 
-  const [categoryList, setCategoryList] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState({});
+  const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+  const [isLoggedin, setIsLoggedin] = useState(false);
+
+  const handleLogout = () => {
+    removeCookie('jwt', { path: '/' });
+    setIsLoggedin(false);
+  };
+
+  const handleLogin = () => {
+    setIsLoggedin(true);
+    getCategories();
+  };
+
+  useEffect(() => {
+    if (cookies.jwt) {
+      handleLogin()
+    }
+
+  }, [isLoggedin]);
+  
+  useEffect(() => {
+    console.log(categories);
+    // Reset the isLoggedIn state to false for the login and signup pages
+    const path = window.location.pathname;
+    if (
+      /^\/login$/.test(path) ||
+      /^\/signup$/.test(path) ||
+      /^\/users\/[^/]+\/verify\/[^/]+$/.test(path) ||
+      /^\/users\/[^/]+\/changePassword\/[^/]+$/.test(path) ||
+      /^\/forgetPassword$/.test(path)
+    ) {
+      handleLogout();
+    }
+  })
+
+  //------------------- States--------------------------------------
+  const [alert, setAlert] = useState(null);
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleCollapsed = () => {
+        setCollapsed(!collapsed);
+  };
   //------------------State Handlers---------------
   const showAlert = (message, type) => {
     setAlert({
@@ -36,84 +76,39 @@ const App = () => {
     }, 8000);
   };
 
-  const handleAddCategory = (newCategory) => {
-    setCategoryList((prevList) => [...prevList, newCategory]);
-  };
-  const handleSelectCategory = (category) => {
-    setSelectedCategory(category)
-  }
 
-  //-----------------------------------------------------------
-
-  function checkCookie(cookieName) {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.startsWith(`${cookieName}=`)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  const handleLogout = () => {
-    removeCookie('jwt', { path: '/' });
-    setIsLoggedin(false);
-  };
-  const handleLogin = () => {
-    setIsLoggedin(true);
-  };
-
-  const getCategories = async () => {
-    try {
-      const response = await fetch(`http://localhost:8000/getCategories`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-      });
-      const categories = await response.json()
-      setCategoryList(categories)
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
-  useEffect(() => {
-    if (cookies.jwt) {
-      setIsLoggedin(true)
-    }
-    if (isLoggedin) {
-      getCategories();
-    }
-
-  }, [isLoggedin]);
-
-  useEffect(() => {
-    console.log(categoryList);
-    // Reset the isLoggedIn state to false for the login and signup pages
-    const path = window.location.pathname;
-    if (path === "/login" || path === "/signup" || path === "/users/:userId/verify/:verificationToken" || path === "/users/:userId/changePassword/:resetPasswordToken" || path === "/forgetPassword") {
-      handleLogout()
-    }
-  })
   return (
     <>
       <ProductState>
         <BrowserRouter>
-          <Navbar addCategoryHandler={handleAddCategory} />
-          <div className={isLoggedin ? "main-div" : ""}>
-            <SidebarComponent categoryList={categoryList} handleSelectCategory={handleSelectCategory} handleLogout={handleLogout} />
+          {(isLoggedin||cookies.jwt) ? (
+            <AdminNavbar collapsed={collapsed} toggleCollapsed={toggleCollapsed}/>
+            ) :
+          (null)}
+          <div className={ isLoggedin ? "loggedin-div" : "notLoggedin-div"}>
+            {(isLoggedin||cookies.jwt) ? (
+              <AdminSidebar collapsed={collapsed} handleLogout={handleLogout} />
+             ) :
+             (null)}
             <Routes>
               <Route path="/signup" element={<Signup alert={alert} showAlert={showAlert} />} />
               <Route path="/login" element={<Login alert={alert} handleLogin={handleLogin} showAlert={showAlert} />} />
               <Route path="/users/:userId/verify/:verificationToken" element={<VerifyUser />} />
               <Route path="/forgetPassword" element={<ForgetPassword alert={alert} showAlert={showAlert} />} />
               <Route path="/users/:userId/changePassword/:resetPasswordToken" element={<ChangePassword alert={alert} showAlert={showAlert} />} />
-              <Route path="/" element={<Dashboard isLoggedin={isLoggedin} alert={alert} />} />
-              <Route path="/addNewProduct" element={<AddNewProduct isLoggedin={isLoggedin} categoryList={categoryList} showAlert={showAlert}/>} />
-              <Route path="/categories/:categoryName" element={<Category isLoggedin={isLoggedin} categoryList={categoryList}/>} />
+              {(isLoggedin||cookies.jwt) ? (
+              <>
+                <Route path="/" element={<Dashboard alert={alert} />} />
+                <Route path="/addNewProduct" element={<AddNewProduct  showAlert={showAlert} />}/>
+                <Route path="/categories/:categoryName" element={<Category/>}/>
+              </>    
+              ) : (
+              <>
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/addNewProduct" element={<Navigate to="/login" replace />} />
+                <Route path="/categories/:categoryName" element={<Navigate to="/login" replace />} />
+              </>
+              )}
               <Route path="/*" element={<ErrorPage />} />
             </Routes>
           </div>
