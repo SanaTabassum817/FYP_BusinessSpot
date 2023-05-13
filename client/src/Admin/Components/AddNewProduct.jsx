@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import "../../Shared/styles/addNewProductPage.css"
 import productContext from "../Context/ProductContext";
 import CategoriesContext from "../Context/CategoriesContext";
-import { Row, Col, Form, Select, Input,InputNumber, Button,Upload} from 'antd';
+import {  Form, Select, Input,InputNumber, Button,Upload} from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 
 const AddNewProduct = (props) => {
@@ -29,10 +29,6 @@ const AddNewProduct = (props) => {
     const [subcatalog, setSubCatalog] = useState([]);
     const [msg, setMsg] = useState()
 
-    const [cookies] = useCookies(['jwt']);
-    if (!props.isLoggedin && !cookies.jwt) {
-        return <Navigate to="/login? You are not logged in. Please login first." />;
-    }
 
     
     const onSelectEventHandler = (value,option) => {

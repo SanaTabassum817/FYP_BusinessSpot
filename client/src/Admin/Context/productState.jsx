@@ -9,6 +9,10 @@ const ProductState = (props) => {
   const productInital = []
   const [products, setProducts] = useState(productInital);
 
+  const productsHandler=(data)=>{
+    setProducts(data)
+  }
+
   //Get all productsf
   const getProducts = async () => {
     // API CALL
@@ -52,10 +56,10 @@ const ProductState = (props) => {
         });
         // Client side
         const jsonResponse = await response.json();
-        console.log(jsonResponse);
+        // console.log(jsonResponse);
         if (jsonResponse && jsonResponse.length > 0) {
           setProducts(jsonResponse);
-          console.log(products);
+          // console.log(products);
         }
         else if(jsonResponse.error){
           console.log(jsonResponse.error)
@@ -166,7 +170,7 @@ const addProduct = async (newProduct) => {
 
   return (
 
-    <ProductContext.Provider value={{ products, editProduct, deleteProduct, addProduct, getProducts, getProductsByCategory }}>
+    <ProductContext.Provider value={{ products, editProduct, deleteProduct, addProduct, getProducts, getProductsByCategory,productsHandler }}>
       {props.children}
     </ProductContext.Provider>
   )

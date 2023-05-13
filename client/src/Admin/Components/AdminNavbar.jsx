@@ -19,7 +19,7 @@ const AdminNavbar = (props) => {
         >
           {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </Button>
-        <h2 className='logoText'>Business <span className='logo'>Spot</span> </h2>
+        <h2 className='logoText brandName'>Business <span className='logo'>Spot</span> </h2>
     </Menu>
     </>
   );

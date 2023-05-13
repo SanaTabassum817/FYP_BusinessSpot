@@ -1,10 +1,10 @@
 import React , { useContext, useRef }  from 'react';
 import productContext from "../Context/ProductContext";
-import { Modal, Row, Col, Form, Input,InputNumber, Button, Carousel} from 'antd';
+import { Modal,  Form, Input,InputNumber, Button, Carousel} from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import "../../Shared/styles/productImageCarousel.css"
 
-const EditProductModal = ({ visible, onClose, onSave, product }) => {
+const EditProductModal = ({ visible, onClose, product }) => {
   const context = useContext(productContext);
   const {editProduct } = context;
   // console.log(product);

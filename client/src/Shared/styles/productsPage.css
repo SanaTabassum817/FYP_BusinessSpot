@@ -1,6 +1,21 @@
-.product-grid {
+.product-wrapper{
   width: 100%;
   overflow-y: auto;
+}
+.filter-div{
+  margin: 0%;
+  padding: 0%;
+  height:50px;
+  /* border: 1px solid red; */
+  text-align: right;
+  padding-right: 10px;
+}
+.filter-box{
+  margin-top: 20px;
+  margin-bottom: auto;
+  text-align: left;
+}
+.product-grid {
   display: flex;
   justify-content: center;
   justify-items: center;
@@ -9,6 +24,7 @@
   text-align: center;
   padding: 20px 0px;
   margin: 0 auto;
+  /* border:1px solid red */
 }
 
 .product-card{
@@ -21,8 +37,9 @@
   
 }
   /* Responsive layout for screens less than 576px */
-  @media all and (max-width: 575px) {
+  @media (max-width: 575px) {
     .product-grid {
+      /* width: 100%; */
        justify-content: center;
        gap: 40px 40px;
     }

@@ -4,7 +4,7 @@ const categoryModel=require("../Models/categoryModel")
 const addNewCategory=async (req,res)=>{
     try{
         let {category}=req.body
-        console.log(category);
+        // console.log(category);
         category=category.toLowerCase();
         const result1=await categoryModel.findOne({category})
         if(result1){
@@ -32,5 +32,31 @@ const getCategories=async (req,res)=>{
     res.status(200).send(result1);
 
 }
+
+//Controller 3:
+const addNewSubCategory=async (req,res)=>{
+    try{
+        let category = req.params.category;
+        let {subcategory}=req.body
+        // console.log(category);
+        // console.log(subcategory);
+        category=category.toLowerCase();
+        const result= await categoryModel.findOneAndUpdate({ category: category },{ $push: { subCategories: subcategory } },{ new: true })
+        if(result._id){
+            // console.log(result);
+            res.send(result);
+        }else{
+            console.log(error);
+            res.send({error:"Some error has occured while adding the new Sub-category."})
+        }
+            
+
+    }catch(error){
+        console.log(error);;
+        res.send({error:"Some error has occured while adding the new Sub-category."})
+    }
+}
+
 module.exports.addNewCategory=addNewCategory;
 module.exports.getCategories=getCategories;
+module.exports.addNewSubCategory=addNewSubCategory;

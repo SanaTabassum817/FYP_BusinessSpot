@@ -4,7 +4,7 @@ const userAuthentication = async(req, res, next) => {
     try {
         // console.log("jwt obtained from cookies:",req.cookies.jwt);
         const _id = jwt.verify(req.cookies.jwt, process.env.SECRET_KEY) //verifying the jwt token obtained from cookies and getting user id
-        //console.log("user id",_id);
+        // console.log("user id",_id);
         const user= await userModel.findOne({_id}) //getting user details based on id
         //console.log("user is: ",user);
         if(user){

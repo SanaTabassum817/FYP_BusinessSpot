@@ -45,7 +45,7 @@ const App = () => {
   }, [isLoggedin]);
   
   useEffect(() => {
-    console.log(categories);
+    // console.log(categories);
     // Reset the isLoggedIn state to false for the login and signup pages
     const path = window.location.pathname;
     if (

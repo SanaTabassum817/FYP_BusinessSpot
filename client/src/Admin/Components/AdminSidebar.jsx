@@ -4,6 +4,7 @@ import {LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,DashboardOutlined,Gol
 import { Button, Menu } from 'antd';
 import { useState,useContext } from 'react';
 import AddNewCategory from './AddNewCategory';
+import AddNewSubCategory from './AddNewSubCategory';
 import CategoriesContext from "../Context/CategoriesContext";
 import "../../Shared/styles/adminSidebar.css"
 const AdminSidebar= (props) => {
@@ -11,13 +12,22 @@ const AdminSidebar= (props) => {
   const context = useContext(CategoriesContext);
   const { categories} = context; // destructuring
 
-    const [open,setOpen]=useState(false);
+    const [openModalCategory,setOpenModalCategory]=useState(false);
 
-    const openModal=()=>{
-        setOpen(true);
+    const handleOpenModalCategory=()=>{
+        setOpenModalCategory(true);
     }
-    const closeModal=()=>{
-        setOpen(false);
+    const handleCloseModalCategory=()=>{
+        setOpenModalCategory(false);
+    }
+
+    const [openModalSubCategory,setOpenModalSubCategory]=useState(false);
+
+    const handleOpenModalSubCategory=()=>{
+        setOpenModalSubCategory(true);
+    }
+    const handleCloseModalSubCategory=()=>{
+        setOpenModalSubCategory(false);
     }
 
     function getItem(label, key, icon, children, type) {
@@ -26,8 +36,12 @@ const AdminSidebar= (props) => {
 
     const items = [
         getItem('Dashboard', 'dashboard', <DashboardOutlined />),
-        getItem('Add New Category', 'addNewCategory',<PlusSquareOutlined />),
-        getItem('Add New Product', 'addNewProduct',<PlusSquareOutlined />),
+        getItem('Add', 'add',<PlusSquareOutlined />,
+        [
+            getItem('Category', 'addNewCategory',),
+            getItem('Sub-Category', 'addNewSubCategory',),
+            getItem('Product', 'addNewProduct',),
+        ]),
         getItem('Categories', 'sub1', <GoldOutlined />,categories.map((category, index) =>
             getItem(category.category, index)
         )),
@@ -43,7 +57,9 @@ const AdminSidebar= (props) => {
         }else if(key==='addNewProduct'){
             navigate('/addNewProduct');
         }else if(key ==='addNewCategory'){
-            openModal();
+            handleOpenModalCategory();
+        }else if(key ==='addNewSubCategory'){
+            handleOpenModalSubCategory();
         }else if(key==="logout"){
             props.handleLogout()
         }else{
@@ -56,7 +72,7 @@ const AdminSidebar= (props) => {
     return (
       <>  
         <Menu
-          // className='adminSidebar'
+          className='adminSidebar'
           defaultSelectedKeys={['dashboard']}
           defaultOpenKeys={['sub1']}
           mode="inline"
@@ -66,7 +82,8 @@ const AdminSidebar= (props) => {
           items={items}
           onClick={({ key }) =>handleMenuClick(key)}
         />
-        <AddNewCategory open={open} openModal={openModal} closeModal={closeModal}/>
+        <AddNewCategory open={openModalCategory} closeModal={handleCloseModalCategory}/>
+        <AddNewSubCategory open={openModalSubCategory} closeModal={handleCloseModalSubCategory}/>
       </>
     );
   
