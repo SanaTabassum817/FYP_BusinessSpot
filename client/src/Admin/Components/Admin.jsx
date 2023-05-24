@@ -16,6 +16,7 @@ import ProductState from "../Context/productState"
 import AdminNavbar from "./AdminNavbar";
 import CategoriesContext from "../Context/CategoriesContext";
 import '../../Shared/styles/admin.css';
+import BusinessProfile from "./BusinessProfile";
 
 const App = () => {
 
@@ -101,12 +102,14 @@ const App = () => {
                 <Route path="/" element={<Dashboard alert={alert} />} />
                 <Route path="/addNewProduct" element={<AddNewProduct  showAlert={showAlert} />}/>
                 <Route path="/categories/:categoryName" element={<Category/>}/>
+                <Route path="/businessAbout" element={<BusinessProfile/>}/>
               </>    
               ) : (
               <>
                 <Route path="/" element={<Navigate to="/login" replace />} />
                 <Route path="/addNewProduct" element={<Navigate to="/login" replace />} />
                 <Route path="/categories/:categoryName" element={<Navigate to="/login" replace />} />
+                <Route path="/businessAbout" element={<Navigate to="/login" replace />}/>
               </>
               )}
               <Route path="/*" element={<ErrorPage />} />
