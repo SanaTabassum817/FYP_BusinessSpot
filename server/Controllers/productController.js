@@ -6,7 +6,7 @@ const getProductsByCategory = async (req, res) => {
     const productCategory = req.params.productCategory;
     try {
       const products = await productModel.find({ productCategory });
-      console.log(products);
+      // console.log(products);
       res.json(products);
     } catch (error) {
       console.error(error.message);
@@ -18,7 +18,7 @@ const getProductsByCategory = async (req, res) => {
 const getAllProducts=async(req,res)=>{
     try {
         const products = await productModel.find({});   
-        console.log(products);
+        // console.log(products);
         res.json(products);
     }
     catch (error) {
@@ -32,7 +32,7 @@ const getAllProducts=async(req,res)=>{
 const addNewProduct=async(req,res)=>{
     try {
       const productImages = req.files.map((file) => file.location);
-      console.log(productImages);
+      // console.log(productImages);
       // const productImages  = req.files.map(file => file.location);
       const { productName, productDescription, productCategory, productSubCategory, productPrice } = req.body;
       // console.log(productImages);
@@ -69,7 +69,7 @@ const updateProduct = async (req, res) => {
       if (productImages) { newProduct.productImages = productImages };
   
       //Find the product to be updated and update it
-      console.log(req.params.id);
+      // console.log(req.params.id);
       let product = await productModel.findById(req.params.id);
       if (!product) { return res.status(404).send("Not Found"); }
     //   if (product.user.toString() !== req.user.id) {

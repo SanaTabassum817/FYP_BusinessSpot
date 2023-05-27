@@ -47,13 +47,17 @@ export default function BusinessProfile() {
 
   const fetchBusinessData = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/getUserInfo");
+      console.log("sending request of getUserInfo at backend");
+      const response = await axios.get("http://localhost:8000/getUserInfo", { withCredentials: true });
+      console.log(response);
       setBusinessData(response.data);
-      console.log(response.data);
+      //console.log();
     } catch (error) {
+      console.log("error occured.");
       console.error(error);
       // Handle error here, e.g. show an error message to the user
     }
+    console.log("returning from function");
   };
 
   const editProfile = async (updatedData) => {

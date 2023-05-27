@@ -3,7 +3,7 @@ const tokenModel=require("../Models/tokenModel")
 const resetPassswordTokenModel=require("../Models/resetPasswordTokenModel")
 const bcryptjs=require("bcryptjs")
 const crypto = require("crypto")
-const sendEmailtoUser =require("../Utils/sendEmailToUser")
+const sendEmailtoUser =require("../utils/sendEmailToUser")
 
 //Controller: 1
 const signupUser=async (req,res)=>{

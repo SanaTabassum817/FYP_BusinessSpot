@@ -2,16 +2,17 @@ const UserProfile = require('../Models/userProfileModel');
 
 // 1. Get user profile info
 const getUserInfo = async (req, res) => {
-  const userId = req.user;
-
+  console.log("Req recived at backend");
+  const user = req.user;
+  const userId=user._id;
+  // console.log(userId);
   try {
     const userProfile = await UserProfile.findOne({ user: userId });
-
+    // console.log(userProfile);
     if (!userProfile) {
       return res.status(404).send("User Profile Not Found");
     }
-
-    res.json(userProfile);
+    res.send(userProfile);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Error in fetching user profile");
