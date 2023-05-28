@@ -1,0 +1,16 @@
+header{
+  /* border: 1px solid red; */
+  text-align: center;
+}
+.product-card{
+  cursor: default; 
+}
+.ant-form-item-label{
+  /* border: 1px solid green; */
+}
+
+.save-btn-warapper{
+  /* border: 1px solid red; */
+  /* text-align: right; */
+  /* margin-right: ; */
+}

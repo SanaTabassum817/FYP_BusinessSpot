@@ -1,0 +1,31 @@
+.ant-carousel .slick-dots li button {
+    background-color: #000;
+    opacity: 0.5;
+  }
+  
+  .ant-carousel .slick-dots li.slick-active button {
+    opacity: 1;
+    
+  }
+  .carousel-prev-button,
+.carousel-next-button {
+  position: absolute;}
+
+.proviewImageCarousel{
+  width:240px;
+  height:200px;
+  border-radius:5px;
+}
+.proviewImageCarousel img{
+  width:240px;
+  height:200px;
+  border-radius:5px;
+  object-fit: cover;
+}
+.carousel-wrapper{
+  display: inline-block;
+}
+.custom-carousel-buttons{
+  margin-top: 10px;
+  text-align:center
+}
