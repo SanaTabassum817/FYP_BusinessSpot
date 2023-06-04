@@ -1,17 +1,18 @@
 const UserProfile = require('../Models/userProfileModel');
+const user=require('../Models/userModel');
 
 // 1. Get user profile info
-const getUserInfo = async (req, res) => {
-  console.log("Req recived at backend");
-  const user = req.user;
-  const userId=user._id;
-  // console.log(userId);
+const getUser = async (req, res) => {
+  console.log("Req received at backend");
+  const userId = req.user._id;
   try {
-    const userProfile = await UserProfile.findOne({ user: userId });
-    // console.log(userProfile);
+    let userProfile = await UserProfile.findOne({ user: userId });
+
     if (!userProfile) {
-      return res.status(404).send("User Profile Not Found");
+      // Call the addUserProfile function to create a new user profile
+      return addUserProfile(req, res); // Pass the response object to the addUserProfile function
     }
+
     res.send(userProfile);
   } catch (error) {
     console.error(error.message);
@@ -19,55 +20,49 @@ const getUserInfo = async (req, res) => {
   }
 };
 
-const updateUserInfo = async (req, res) => {
-  const {
-    businessName,
-    businessTagline,
-    businessDescription,
-    businessEmail,
-    businessAddress,
-    bContactNumber,
-    youtube,
-    linkedIn,
-    twitter,
-    instagram,
-    facebook
-  } = req.body;
 
-  const userId = req.user;
+const updateUser = async (req, res) => {
+  const {
+    name,
+    profession,
+    about,
+    email,
+    address,
+    contactNumber,
+    image,
+  } = req.body;
+  
+
+  const userId = req.user._id;
 
   try {
     let userProfile = await UserProfile.findOne({ user: userId });
 
     if (!userProfile) {
-      // Call the addUserProfile function to create a new user profile
-      userProfile = await addUserProfile(req);
+      return res.status(404).send("User Profile Not Found");
     }
 
-    userProfile.businessName = businessName || userProfile.businessName;
-    userProfile.businessTagline = businessTagline || userProfile.businessTagline;
-    userProfile.businessDescription = businessDescription || userProfile.businessDescription;
-    userProfile.businessEmail = businessEmail || userProfile.businessEmail;
-    userProfile.businessAddress = businessAddress || userProfile.businessAddress;
-    userProfile.bContactNumber = bContactNumber || userProfile.bContactNumber;
-    userProfile.youtube = youtube || userProfile.youtube;
-    userProfile.linkedIn = linkedIn || userProfile.linkedIn;
-    userProfile.twitter = twitter || userProfile.twitter;
-    userProfile.instagram = instagram || userProfile.instagram;
-    userProfile.facebook = facebook || userProfile.facebook;
-
+    userProfile.name = name || userProfile.name;
+    userProfile.profession = profession || userProfile.profession;
+    userProfile.about = about || userProfile.about;
+    userProfile.email = email || userProfile.email;
+    userProfile.address = address || userProfile.address;
+    userProfile.contactNumber = contactNumber || userProfile.contactNumber;
+    userProfile.image = image || userProfile.image;
+    
+ // Validate the image field
+ if (Array.isArray(image)) {
+  userProfile.image = null;
+} else {
+  userProfile.image = image;
+}
     // Check if file is uploaded
     if (req.file) {
       // Save the file path or perform further processing as needed
-      userProfile.logoImage = req.file.path;
+      userProfile.image = req.file.path;
     }
 
     userProfile = await userProfile.save();
-    if (result) {
-  res.send({ msg: "User profile added successfully." });
-} else {
-  res.status(500).send({ error: "User profile could not be saved due to some error." });
-}
 
     res.json(userProfile);
   } catch (error) {
@@ -78,40 +73,31 @@ const updateUserInfo = async (req, res) => {
 
 
 // 3. Add user profile
-const addUserProfile = async (req, res) => {
+const addUser = async (req, res) => {
   try {
     const {
-      businessName,
-      businessTagline,
-      businessDescription,
-      businessEmail,
-      businessAddress,
-      bContactNumber,
-      youtube,
-      linkedIn,
-      twitter,
-      instagram,
-      facebook,
-      logoImage
+      name,
+      profession,
+      about,
+      email,
+      address,
+      contactNumber,
+      image,
     } = req.body;
-
+    
     const user = req.user;
-
+    
     const userProfile = new UserProfile({
       user,
-      businessName,
-      businessTagline,
-      businessDescription,
-      businessEmail,
-      businessAddress,
-      bContactNumber,
-      youtube,
-      linkedIn,
-      twitter,
-      instagram,
-      facebook,
-      logoImage
+      name,
+      profession,
+      about,
+      email: user.email, // Use email from User model
+      address,
+      contactNumber,
+      image,
     });
+    
 
     const result = await userProfile.save();
 
@@ -127,7 +113,7 @@ const addUserProfile = async (req, res) => {
 };
 
 module.exports = {
-  getUserInfo,
-  updateUserInfo,
-  addUserProfile
+  getUser,
+  updateUser,
+  addUser
 };

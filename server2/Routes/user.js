@@ -20,11 +20,11 @@ router.get("/",middleware.userAuthentication,userController.home)
 
 // routes for userBusinessProfile
 
-router.get("/getUserInfo",middleware.userAuthentication,userProfileController.getUserInfo)
+router.get("/getUser",middleware.userAuthentication,userProfileController.getUser)
 //8) ROUTE 8: update UserProfile Info
-router.put("/updateUserInfo",middleware.userAuthentication,uploadImage.single('logoImage'),userProfileController.updateUserInfo)
+router.put("/updateUser",middleware.userAuthentication,uploadImage.single('image'),userProfileController.updateUser)
 //9) ROUTE 8: update UserProfile Info
-router.post("/addUserInfo",middleware.userAuthentication,userProfileController.addUserProfile)
+router.post("/addUser",middleware.userAuthentication,userProfileController.addUser)
 
 
 

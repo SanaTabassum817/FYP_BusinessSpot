@@ -1,23 +1,25 @@
-const UserProfile = require('../Models/userProfileModel');
+const businessProfile = require('../Models/businessProfileModel');
+const user=require('../Models/userModel');
 
 // 1. Get user profile info
 const getUserInfo = async (req, res) => {
-  console.log("Req recived at backend");
-  const user = req.user;
-  const userId=user._id;
-  // console.log(userId);
+  console.log("Req received at backend");
+  const userId = req.user._id;
   try {
-    const userProfile = await UserProfile.findOne({ user: userId });
-    // console.log(userProfile);
+    let userProfile = await businessProfile.findOne({ user: userId });
+
     if (!userProfile) {
-      return res.status(404).send("User Profile Not Found");
+      // Call the addUserProfile function to create a new user profile
+      return addUserProfile(req, res); // Pass the response object to the addUserProfile function
     }
+
     res.send(userProfile);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Error in fetching user profile");
   }
 };
+
 
 const updateUserInfo = async (req, res) => {
   const {
@@ -34,14 +36,13 @@ const updateUserInfo = async (req, res) => {
     facebook
   } = req.body;
 
-  const userId = req.user;
+  const userId = req.user._id;
 
   try {
-    let userProfile = await UserProfile.findOne({ user: userId });
+    let userProfile = await businessProfile.findOne({ user: userId });
 
     if (!userProfile) {
-      // Call the addUserProfile function to create a new user profile
-      userProfile = await addUserProfile(req);
+      return res.status(404).send("User Profile Not Found");
     }
 
     userProfile.businessName = businessName || userProfile.businessName;
@@ -63,11 +64,6 @@ const updateUserInfo = async (req, res) => {
     }
 
     userProfile = await userProfile.save();
-    if (result) {
-  res.send({ msg: "User profile added successfully." });
-} else {
-  res.status(500).send({ error: "User profile could not be saved due to some error." });
-}
 
     res.json(userProfile);
   } catch (error) {
@@ -97,12 +93,12 @@ const addUserProfile = async (req, res) => {
 
     const user = req.user;
 
-    const userProfile = new UserProfile({
+    const userProfile = new businessProfile({
       user,
       businessName,
       businessTagline,
       businessDescription,
-      businessEmail,
+      businessEmail: user.email, // Use email from User model
       businessAddress,
       bContactNumber,
       youtube,

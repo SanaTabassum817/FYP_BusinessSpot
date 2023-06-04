@@ -2,7 +2,7 @@ const express = require('express');
 const userController = require('../Controllers/userController.js');
 const router = express.Router();
 const middleware=require('../middleware/userAuthentication.js')
-const userProfileController=require('../Controllers/userProfileContoller.js')
+const userProfileController=require('../Controllers/businessProfileContoller.js')
 const  uploadImage  =require("../middleware/fileUploadMiddleware.js")
 
 //1) ROUTE 1 : signup post request 

@@ -40,6 +40,7 @@ export default function BusinessProfile() {
     }
     return e && e.fileList;
   };
+  
 
   useEffect(() => {
     fetchBusinessData();
@@ -53,7 +54,7 @@ export default function BusinessProfile() {
       setBusinessData(response.data);
       //console.log();
     } catch (error) {
-      console.log("error occured.");
+      console.log("error occured.",error);
       console.error(error);
       // Handle error here, e.g. show an error message to the user
     }
@@ -63,25 +64,42 @@ export default function BusinessProfile() {
   const editProfile = async (updatedData) => {
     console.log("Edit profile function called");
     try {
-      const response = await axios.put("http://localhost:8000/updateUserInfo", updatedData);
+      console.log("eidt function dta received",updatedData);
+      const response = await axios.put("http://localhost:8000/updateUserInfo", updatedData,{ withCredentials: true });
       setBusinessData(response.data);
-      console.log(response.data);
+      console.log("edit data response",response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleSave = () => {
-    form.validateFields().then(() => {
-      console.log("handle saved is called");
-      console.log("Form validation successful");
-      const updatedData = form.getFieldsValue();
+  const handleSave = async () => {
+    try {
+      const values = await form.validateFields();
+  
+      // Convert fileList to a single file object
+      let updatedData = { ...values };
+      if (updatedData.logoImage && updatedData.logoImage.length > 0) {
+        const file = updatedData.logoImage[0].originFileObj;
+        const formData = new FormData();
+        formData.append("file", file);
+  
+        const response = await axios.post("http://localhost:8000/uploadImage", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        const imageUrl = response.data.imageUrl;
+        updatedData = { ...updatedData, logoImage: imageUrl };
+      }
+  
+      console.log("handleSave is called");
       editProfile(updatedData);
-      console.log(updatedData);
-      form.resetFields();
       setEditModalVisible(false);
-    });
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
+  
 
   const handleTagClick = (url) => {
     window.open(url, "_blank");
@@ -94,7 +112,7 @@ export default function BusinessProfile() {
   const handleModalClose = () => {
     setEditModalVisible(false);
   };
-
+  
   return (
     <div className="business-profile">
       <Row gutter={[16, 16]}>
@@ -186,6 +204,9 @@ export default function BusinessProfile() {
           <Form.Item label="Address  " name="businessAddress">
             <Input />
           </Form.Item>
+          <Form.Item label="Email  " name="businessEmail">
+            <Input />
+          </Form.Item>
           <Form.Item label="Phone No  " name="bContactNumber">
             <Input />
           </Form.Item>
@@ -197,22 +218,22 @@ export default function BusinessProfile() {
           <Space direction="vertical">
             <Input addonBefore={<FacebookOutlined />} placeholder="Facebook URL" name="facebook" />
             <Input addonBefore={<TwitterOutlined />} placeholder="Twitter URL" name="twitter" />
-            <Input addonBefore={<InstagramOutlined />} placeholder="Instagram URL" namae="instagram" />
+            <Input addonBefore={<InstagramOutlined />} placeholder="Instagram URL" name="instagram" />
             <Input addonBefore={<LinkedinOutlined />} placeholder="LinkedIn URL" name="linkedIn" />
             <Input addonBefore={<YoutubeOutlined />} placeholder="YouTube URL" name="youtube" />
           </Space>
           <br />
           <br />
-          <Form.Item label="Upload" name="logoImage" valuePropName="fileList" getValueFromEvent={normFile}>
-            <Upload action="/upload.do" listType="picture-card">
-              <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Image </div>
-              </div>
-            </Upload>
-          </Form.Item>
+          <Form.Item label="Upload" name="logoImage" valuePropName="logoImage" getValueFromEvent={normFile}>
+                        <Upload action="/upload.do" listType="picture-card"   accept=".png,.jpg,.jpeg">
+                        <div>
+                            <PlusOutlined />
+                            <div style={{marginTop: 8,}}>Upload</div>
+                        </div>
+                        </Upload>
+                    </Form.Item>
           <Form.Item wrapperCol={{ offset: 4 }}>
-            <Button type="primary" htmlType="submit" onClick={handleSave}>
+            <Button type="primary" htmlType="submit" >
               Update
             </Button>
             <Button htmlType="button" className="btn1" onClick={handleModalClose}>

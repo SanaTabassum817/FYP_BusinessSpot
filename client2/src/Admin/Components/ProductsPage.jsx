@@ -13,15 +13,30 @@ export default function ProductsPage(props) {
   const { Option } = Select;
   const [form] = Form.useForm();
   const { addToCart } = useCartContext();
-  const [amount, setAmount] = useState(1);
+  const [amounts, setAmounts] = useState({}); // Use an object to store amounts for each product
 
-  const setDecrease = () => {
-    setAmount((prevAmount) => Math.max(prevAmount - 1, 1));
+  const setDecrease = (productId) => { // Receive productId as an argument
+    setAmounts((prevAmounts) => {
+      const prevAmount = prevAmounts[productId] || 1;
+      const newAmount = Math.max(prevAmount - 1, 1);
+      return {
+        ...prevAmounts,
+        [productId]: newAmount, // Update the amount for the specific productId
+      };
+    });
   };
 
-  const setIncrease = () => {
-    setAmount((prevAmount) => prevAmount + 1);
+  const setIncrease = (productId) => { // Receive productId as an argument
+    setAmounts((prevAmounts) => {
+      const prevAmount = prevAmounts[productId] || 1;
+      const newAmount = prevAmount + 1;
+      return {
+        ...prevAmounts,
+        [productId]: newAmount, // Update the amount for the specific productId
+      };
+    });
   };
+
 
   const context = useContext(productContext);
   const categoryContext = useContext(CategoriesContext);
@@ -113,14 +128,14 @@ export default function ProductsPage(props) {
               <Space>
                 <NavLink
                   to="/cart"
-                  onClick={() => addToCart(product.id, product, amount)}
+                  onClick={() => addToCart(product._id, product, amounts[product._id] || 1)}
                 >
                   <Button type="primary">Add to Cart</Button>
                 </NavLink>
                 <CartAmountToggle
-                  amount={amount}
-                  setDecrease={setDecrease}
-                  setIncrease={setIncrease}
+                  amount={amounts[product._id] || 1}
+                  setDecrease={() => setDecrease(product._id)}
+                  setIncrease={() => setIncrease(product._id)}
                 />
               </Space>
             </Card>

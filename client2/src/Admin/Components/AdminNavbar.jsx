@@ -1,33 +1,57 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingCartOutlined, UserOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Menu, Button } from 'antd';
-import { useState } from 'react';
-import { MenuFoldOutlined, MenuUnfoldOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import AdminSidebar from './AdminSidebar';
-import "../../Shared/styles/adminNavbar.css";
-import { Link } from "react-router-dom";
 import { useCartContext } from "../Context/cart_Context";
+import "../../Shared/styles/adminNavbar.css";
+import CategoriesContext from "../Context/CategoriesContext";
 
 const AdminNavbar = (props) => {
   const { cart } = useCartContext();
   const cartQuantity = cart.length;
+  const navigate = useNavigate();
+  const context = useContext(CategoriesContext);
+  const { categories } = context; // destructuring
+
+  const handleMenuClick = (key) => {
+    if (key === 'home') {
+      navigate('/');
+    } else if (key === "logout") {
+      props.handleLogout();
+    } else if (key === "products") {
+      navigate('/categories/:categoryName');
+    }
+  };
 
   return (
     <>
-      <Menu className='adminNavbar' theme="dark" mode="horizontal" defaultSelectedKeys={['home']}>
-        <Button
-          type="primary"
-          onClick={props.toggleCollapsed}
-          style={{
-            margin: "12px "
-          }}
-        >
-          {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        </Button>
-        <h2 className='logoText brandName'>Business <span className='logo'>Spot</span> </h2>
-        <Link to="/cart">
-          <ShoppingCartOutlined />
-          <span>{cartQuantity}</span>
-        </Link>
+      <Menu className='adminNavbar' theme="dark" mode="horizontal" defaultSelectedKeys={['products']} onClick={({ key }) => handleMenuClick(key)}>
+
+        <h3 className='logoText brandName'>Business <span className='logo'>Spot</span> </h3>
+        <Menu.Item key="home">
+          <Link to="/">Home</Link>
+        </Menu.Item>
+        <Menu.Item key="products">
+          <span>Products</span>
+        </Menu.Item>
+
+        <Menu.Item key="aboutbusiness">
+          <Link to="/aboutus">About us</Link>
+        </Menu.Item>
+        <Menu.Item key="cart">
+          <Link to="/cart">
+            <ShoppingCartOutlined />
+            <span>{cartQuantity}</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="user">
+          <Link to="/userAbout">
+            <UserOutlined />
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="logout">
+          <LogoutOutlined />
+        </Menu.Item>
       </Menu>
     </>
   );

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const userProfileModel = new mongoose.Schema(
+const businessProfileModel = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -55,4 +55,4 @@ const userProfileModel = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("UserProfile", userProfileModel);
+module.exports = mongoose.model("BusinessProfile", businessProfileModel);

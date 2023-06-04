@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {LogoutOutlined,MenuFoldOutlined,MenuUnfoldOutlined,DashboardOutlined,GoldOutlined,PlusSquareOutlined} from '@ant-design/icons';
+import {LogoutOutlined,MenuFoldOutlined,UserOutlined,MenuUnfoldOutlined,DashboardOutlined,GoldOutlined,PlusSquareOutlined} from '@ant-design/icons';
 import { Button, Menu } from 'antd';
 import { useState,useContext } from 'react';
 import AddNewCategory from './AddNewCategory';
@@ -45,8 +45,11 @@ const AdminSidebar= (props) => {
         getItem('Categories', 'sub1', <GoldOutlined />,categories.map((category, index) =>
             getItem(category.category, index)
         )),
+        getItem('businessProfile', 'businessProfile',<UserOutlined />),
         getItem('Logout', 'logout',<LogoutOutlined />),
+       
     ];
+    
 
     const navigate = useNavigate();
 
@@ -62,6 +65,9 @@ const AdminSidebar= (props) => {
             handleOpenModalSubCategory();
         }else if(key==="logout"){
             props.handleLogout()
+        }
+        else if(key==='businessProfile'){
+            navigate('/businessAbout');
         }else{
             const categoryName = categories[key].category;
             

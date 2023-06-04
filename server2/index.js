@@ -5,6 +5,7 @@ require("./DB/connection")
 const userRoutes=require("./Routes/user")
 const categoryRoutes=require("./Routes/category")
 const productRoutes=require("./Routes/product")
+const orderRoutes=require("./Routes/order")
 const cookieParser=require("cookie-parser")
 const bodyParser=require('body-parser');
 const multer=require('multer');
@@ -23,6 +24,7 @@ app.use(cors({
 app.use("/",userRoutes)
 app.use("/",categoryRoutes)
 app.use("/",productRoutes)
+app.use("/",orderRoutes)
 
 
 const port=process.env.PORT || 8000

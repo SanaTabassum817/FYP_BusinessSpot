@@ -1,0 +1,42 @@
+.checkout-page {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .checkout-summary {
+    width: 60%;
+    padding-right: 16px;
+    margin-left: 30px;
+  }
+  
+  .checkout-form {
+    width: 40%;
+    padding-left: 16px;
+  }
+  
+  .item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .checkout-page {
+      flex-direction: column;
+    }
+  
+    .checkout-summary,
+    .checkout-form {
+      width: 100%;
+    }
+  }
+  .form-item {
+    margin-bottom: 12px; /* Adjust the margin value as desired */
+  }
+  .summary-table td.ant-table-cell {
+    width: 100% ;
+   
+  }
+  
+    

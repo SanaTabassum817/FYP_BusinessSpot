@@ -7,16 +7,16 @@ const userProfileModel = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    businessName: {
+    name: {
       type: String,
     },
-    businessTagline: {
+   profession: {
       type: String,
     },
-    businessDescription: {
+    about: {
       type: String,
     },
-    businessEmail: {
+    email: {
       type: String,
       unique: true,
       required: true,
@@ -27,28 +27,14 @@ const userProfileModel = new mongoose.Schema(
         message: "Not a valid email.",
       },
     },
-    businessAddress: {
+   address: {
       type: String,
     },
-    bContactNumber: {
+    contactNumber: {
       type: String,
     },
-    youtube: {
-      type: String,
-    },
-    linkedIn: {
-      type: String,
-    },
-    twitter: {
-      type: String,
-    },
-    instagram: {
-      type: String,
-    },
-    facebook: {
-      type: String,
-    },
-    logoImage: {
+    
+    image: {
       type: String,
     },
   },
