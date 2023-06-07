@@ -7,10 +7,6 @@ import "../../Shared/styles/aboutBusiness.css";
 const { Title } = Typography;
 const { TextArea } = Input;
 
-const purpleTheme = {
-  primaryColor: "#8A2BE2",
-};
-
 export default function UserProfile() {
   const initialValues = {
     name: "",
@@ -146,25 +142,25 @@ export default function UserProfile() {
           style={{ maxWidth: 600 }}
           onFinish={handleSave}
         >
-          <Form.Item label="Name" name="name">
+          <Form.Item label="Name" name="name" style={{marginBottom:"5px"}}>
             <Input />
           </Form.Item>
-          <Form.Item label="Profession" name="profession">
+          <Form.Item label="Profession" name="profession" style={{marginBottom:"5px"}}>
             <Input />
           </Form.Item>
-          <Form.Item label="About" name="about">
+          <Form.Item label="About" name="about" style={{marginBottom:"5px"}}>
             <TextArea rows={4} />
           </Form.Item>
-          <Form.Item label="Email" name="email">
+          <Form.Item label="Email" name="email" style={{marginBottom:"5px"}}>
             <Input />
           </Form.Item>
-          <Form.Item label="Address" name="address">
+          <Form.Item label="Address" name="address" style={{marginBottom:"5px"}}>
             <Input />
           </Form.Item>
-          <Form.Item label="Contact Number" name="contactNumber">
+          <Form.Item label="Contact Number" name="contactNumber" style={{marginBottom:"5px"}}>
             <Input />
           </Form.Item>
-          <Form.Item label="Image" name="image">
+          <Form.Item label="Image" name="image" style={{marginBottom:"5px"}}>
             <Upload
               name="image"
               accept="image/*"

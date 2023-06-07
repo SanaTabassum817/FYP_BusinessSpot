@@ -1,7 +1,46 @@
-.adminNavbar{
-    /* border:2px solid red; */
-}
+
 .brandName{
     color: white;
     padding-top: 5px;
 }
+.navBar{
+  height: 80px;
+}
+.subItems{
+  margin-left: 50px;
+  
+}
+.icons{
+    margin-left: 600px;
+    size: 70px;
+
+}
+/* adminNavbar.css */
+
+.navBar {
+    height: 70px; /* Adjust the height as desired */
+  }
+  
+  .adminNavbar {
+    height: 100%; /* Make the navbar fill the entire height */
+    line-height: 65px; /* Vertically center the items */
+  }
+  
+  .adminNavbar .ant-menu-item {
+    font-size: 16px; /* Increase the font size of the menu items */
+  }
+  
+  .adminNavbar .ant-menu-item a {
+    color: #fff; /* Change the text color of the menu items */
+  }
+  
+  .adminNavbar .ant-menu-item-icon {
+    font-size: 20px; /* Increase the size of the menu item icons */
+  }
+  
+  .brandName {
+    font-size: 22px; /* Increase the font size of the brand name */
+    margin-right: 15px; /* Add some spacing between the brand name and menu items */
+    margin-top: 13px;
+  }
+  

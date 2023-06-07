@@ -82,7 +82,10 @@ export default function ProductsPage(props) {
 
   return (
     <div className="product-wrapper">
+      <div className="categoryHead">
+      <h3 >{props.productCategory}</h3>
       <div className="filter-div">
+        
         <Form form={form}>
           <Form.Item name="filter">
             <Select
@@ -104,6 +107,8 @@ export default function ProductsPage(props) {
           </Form.Item>
         </Form>
       </div>
+      </div>
+      
       <div className="product-grid">
         {filteredProducts.length > 0 &&
           filteredProducts.map((product) => (
@@ -123,14 +128,14 @@ export default function ProductsPage(props) {
               <Meta
                 title={product.productName}
                 description={product.productPrice}
-                style={{ color: "black", fontSize: "18px" }}
+                style={{ color: "black", fontSize: "15px" }}
               />
               <Space>
                 <NavLink
                   to="/cart"
                   onClick={() => addToCart(product._id, product, amounts[product._id] || 1)}
                 >
-                  <Button type="primary">Add to Cart</Button>
+                  <Button type="primary" style={{marginTop:"5px"}}>Add to Cart</Button>
                 </NavLink>
                 <CartAmountToggle
                   amount={amounts[product._id] || 1}

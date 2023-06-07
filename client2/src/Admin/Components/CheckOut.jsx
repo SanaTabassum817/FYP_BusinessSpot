@@ -95,7 +95,7 @@ const CheckoutPage = () => {
   return (
     <div className="checkout-page">
       <div className="checkout-summary">
-        <h3>Order Summary</h3>
+        <h3 style={{marginTop:"13px",textAlign:"center"}}>Order Summary</h3>
         <Divider />
         <Table
           dataSource={dataSource}
@@ -122,7 +122,7 @@ const CheckoutPage = () => {
         />
       </div>
       <div className="checkout-form">
-        <h3>Checkout Details</h3>
+        <h3 style={{marginTop:"13px",textAlign:"center"}}>Checkout Details</h3>
         <Divider />
         <Form onFinish={onFinish} initialValues={userData}>
           <Form.Item
@@ -130,8 +130,9 @@ const CheckoutPage = () => {
             name="fullName"
             rules={[{ required: true, message: "Please enter your full name" }]}
             className="form-item"
+            style={{ marginBottom: "5px" }}
           >
-            <Input />
+            <Input style={{ width: "80%" }} />
           </Form.Item>
           <Form.Item
             label="Email"
@@ -141,24 +142,27 @@ const CheckoutPage = () => {
               { type: "email", message: "Please enter a valid email address" },
             ]}
             className="form-item"
+            style={{ marginBottom: "5px" }}
           >
-            <Input />
+            <Input style={{ width: "80%" }} />
           </Form.Item>
           <Form.Item
-            label="Phone Number"
+            label="Phone No"
             name="phoneNumber"
             rules={[{ required: true, message: "Please enter your phone number" }]}
             className="form-item"
+            style={{ marginBottom: "5px" }}
           >
-            <Input />
+            <Input style={{ width: "80%" }} />
           </Form.Item>
           <Form.Item
             label="Country"
             name="country"
             rules={[{ required: true, message: "Please select your country" }]}
             className="form-item"
+            style={{ marginBottom: "5px" }}
           >
-            <Select>
+            <Select style={{ width: "80%" }}>
               <Option value="usa">Pakistan</Option>
               {/* Add other countries here */}
             </Select>
@@ -168,9 +172,10 @@ const CheckoutPage = () => {
             name="city"
             rules={[{ required: true, message: "Please select your city" }]}
             className="form-item"
+            style={{ marginBottom: "5px" }}
            
           >
-            <Select  onChange={onCityChange}>
+            <Select  onChange={onCityChange} style={{ width: "80%" }}>
               {/* Render city options based on the selected country */}
               {/* Example options */}
               <Option value="karachi">Karachi</Option>
@@ -183,12 +188,13 @@ const CheckoutPage = () => {
             name="address"
             rules={[{ required: true, message: "Please enter your address" }]}
             className="form-item"
+            style={{ marginBottom: "5px" }}
           >
-            <Input.TextArea rows={4} />
+            <Input.TextArea rows={4} style={{ width: "80%" }} />
           </Form.Item>
           <Form.Item>
             <NavLink to="/payment">
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" style={{marginLeft:"310px",marginTop:"10px"}} >
                 Continue Payment
               </Button>
             </NavLink>

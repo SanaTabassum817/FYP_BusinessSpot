@@ -62,9 +62,9 @@ const CartPage = () => {
 
   return (
     <>
-      <div style={{ padding: "16px", width: "100%", overflowY: "auto" }}>
-        <h1>Cart</h1>
-        <Table dataSource={dataSource} columns={columns} rowKey="key" />
+      <div style={{ padding: "16px", width: "100%", marginLeft:"20px" ,marginRight:"20px", overflowY: "auto" }}>
+        <h2 style={{textAlign:"center",marginBottom:"20px"}}>Cart</h2>
+        <Table dataSource={dataSource} columns={columns} rowKey="key"  pagination={false} />
 
         <Divider />
         <div style={{ marginBottom: "16px" }}>
@@ -82,6 +82,7 @@ const CartPage = () => {
             bottom: "16px",
             right: "16px",
             marginTop: "10px",
+            marginRight:"20px"
           }}
         >
           <Table

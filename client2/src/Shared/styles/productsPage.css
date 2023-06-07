@@ -11,7 +11,7 @@
   padding-right: 10px;
 }
 .filter-box{
-  margin-top: 20px;
+  margin-top: 0px;
   margin-bottom: auto;
   text-align: left;
 }
@@ -44,4 +44,8 @@
        gap: 40px 40px;
     }
   }
-  
+  .categoryHead{
+text-align: center;
+
+margin-top: 20px;
+  }
