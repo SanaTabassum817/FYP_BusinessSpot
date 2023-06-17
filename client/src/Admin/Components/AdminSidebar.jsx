@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {LogoutOutlined,MenuFoldOutlined,UserOutlined,MenuUnfoldOutlined,DashboardOutlined,GoldOutlined,PlusSquareOutlined} from '@ant-design/icons';
+import {LogoutOutlined,MenuFoldOutlined,UserOutlined,OrderedListOutlined,MenuUnfoldOutlined,DashboardOutlined,GoldOutlined,PlusSquareOutlined} from '@ant-design/icons';
 import { Button, Menu } from 'antd';
 import { useState,useContext } from 'react';
 import AddNewCategory from './AddNewCategory';
 import AddNewSubCategory from './AddNewSubCategory';
 import CategoriesContext from "../Context/CategoriesContext";
 import "../../Shared/styles/adminSidebar.css"
+import Order from './Orders';
 const AdminSidebar= (props) => {
 
   const context = useContext(CategoriesContext);
@@ -45,6 +46,7 @@ const AdminSidebar= (props) => {
         getItem('Categories', 'sub1', <GoldOutlined />,categories.map((category, index) =>
             getItem(category.category, index)
         )),
+        getItem('Orders', 'orders',<OrderedListOutlined />),
         getItem('businessProfile', 'businessProfile',<UserOutlined />),
         getItem('Logout', 'logout',<LogoutOutlined />),
        
@@ -65,6 +67,9 @@ const AdminSidebar= (props) => {
             handleOpenModalSubCategory();
         }else if(key==="logout"){
             props.handleLogout()
+        }
+        else if(key==='orders'){
+            navigate('/orders');
         }
         else if(key==='businessProfile'){
             navigate('/businessAbout');

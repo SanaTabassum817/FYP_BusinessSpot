@@ -21,10 +21,13 @@ const initialState = {
 
 const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [userdata, setUserdata] = useState({ fullName: "",
+  const [userData,setUserData]=useState({ name: "",
+  profession: "",
+  about: "",
   email: "",
   address: "",
-  phoneNumber: "",city:""}); // Add userdata state
+  contactNumber: "",
+  image: "",});
 
   const addToCart = (productId, product, amount) => {
     dispatch({ type: "ADD_TO_CART", payload: { productId, product, amount } });
@@ -55,10 +58,9 @@ const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         ...state,
-        userData: userdata, // Use userData instead of userdata
-        setUserData: setUserdata,
         addToCart,
         removeItem,
+        userData,setUserData,
         clearCart,
         setDecrease,
         setIncrease,

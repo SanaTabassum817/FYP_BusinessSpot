@@ -3,6 +3,7 @@ const userController = require('../Controllers/userController.js');
 const router = express.Router();
 const middleware=require('../middleware/userAuthentication.js')
 const userProfileController=require('../Controllers/userProfileContoller.js')
+const businessProfileController=require('../Controllers/businessProfileContoller.js')
 const  uploadImage  =require("../middleware/fileUploadMiddleware.js")
 
 //1) ROUTE 1 : signup post request 
@@ -25,6 +26,8 @@ router.get("/getUser",middleware.userAuthentication,userProfileController.getUse
 router.put("/updateUser",middleware.userAuthentication,uploadImage.single('image'),userProfileController.updateUser)
 //9) ROUTE 8: update UserProfile Info
 router.post("/addUser",middleware.userAuthentication,userProfileController.addUser)
+// get business profile data
+router.get("/getBusinessInfo",middleware.userAuthentication,businessProfileController.getBusinessInfo)
 
 
 

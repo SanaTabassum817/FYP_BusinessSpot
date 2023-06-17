@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Typography, Divider, Button, Modal, Form, Input, Upload } from "antd";
-import { EditOutlined, UploadOutlined } from "@ant-design/icons";
+import { EditOutlined, UploadOutlined ,PlusOutlined} from "@ant-design/icons";
 import axios from "axios";
 import "../../Shared/styles/aboutBusiness.css";
 
@@ -21,7 +21,7 @@ export default function UserProfile() {
   const [userData, setUserData] = useState(initialValues);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const [imageFile, setImageFile] = useState(null);
+
 
   useEffect(() => {
     fetchUserData();
@@ -41,12 +41,7 @@ export default function UserProfile() {
   const editProfile = async (updatedData) => {
     try {
       console.log("Edit profile data received frontend", updatedData);
-      const formData = new FormData();
-      formData.append("image", imageFile); // Append the image file to the form data
-      for (const key in updatedData) {
-        formData.append(key, updatedData[key]);
-      }
-      const response = await axios.put("http://localhost:8000/updateUser", formData, {
+      const response = await axios.put("http://localhost:8000/updateUser", updatedData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -77,7 +72,15 @@ export default function UserProfile() {
   const handleModalClose = () => {
     setEditModalVisible(false);
   };
-
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+  const beforeUpload = (file) => {
+    return false; // Returning false prevents the upload request from being sent
+  };
   return (
     <div className="user-profile">
       <Row gutter={[16, 16]}>
@@ -160,21 +163,14 @@ export default function UserProfile() {
           <Form.Item label="Contact Number" name="contactNumber" style={{marginBottom:"5px"}}>
             <Input />
           </Form.Item>
-          <Form.Item label="Image" name="image" style={{marginBottom:"5px"}}>
-            <Upload
-              name="image"
-              accept="image/*"
-              beforeUpload={(file) => {
-                setImageFile(file);
-                return false;
-              }}
-              fileList={[]}
-            >
-              <Button icon={<UploadOutlined />} disabled={imageFile !== null}>
-                Upload Image
-              </Button>
-            </Upload>
-          </Form.Item>
+          <Form.Item label="Upload" name="image" valuePropName="image" getValueFromEvent={normFile} >
+                        <Upload action="/upload.do" listType="picture-card"  beforeUpload={beforeUpload}  accept=".png,.jpg,.jpeg">
+                        <div>
+                            <PlusOutlined />
+                            <div style={{marginTop: 8,}}>Upload</div>
+                        </div>
+                        </Upload>
+                    </Form.Item>
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Button type="primary" htmlType="submit">
               Update

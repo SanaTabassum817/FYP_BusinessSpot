@@ -7,7 +7,9 @@ const middleware=require('../middleware/userAuthentication.js')
 
 
 //  ROUTE 5 :post save order
-router.post("/saveOrders",middleware.userAuthentication,orderController.saveOrders);
+// router.post("/saveOrders",middleware.userAuthentication,orderController.saveOrders);
+router.get("/getAllOrders",orderController.getAllOrders);
+router.delete("/deleteOrder/:id",orderController.deleteOrder);
 
 
 

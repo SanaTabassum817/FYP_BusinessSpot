@@ -1,130 +1,101 @@
-import React, { useState } from 'react'
-import validator from 'validator'
-import { useParams, useNavigate } from 'react-router-dom'
-import Footer from './Footer'
-import { NavLink } from 'react-router-dom'
-import Header from './Header'
-import "../../Shared/styles/changePassword.css"
+import React, { useState } from "react";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
+import { Form, Input, Button, Layout, FloatButton, message } from "antd";
+import validator from "validator";
+import "../../Shared/styles/authForm.css";
+import HeaderAuth from "./HeaderAuth";
+import FooterAuth from "./Footer";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
-const ChangePassword = (props) => {
+const ChangePassword = () => {
+  const { userId, resetPasswordToken } = useParams();
+  const navigate = useNavigate();
 
-  const { userId, resetPasswordToken } = useParams()
-  const navigate = useNavigate()
+  const [form] = Form.useForm();
 
-  const error = {
-    password: "",
-    cPassword: "",
-    errorMsg: ""
-  }
-  const userInfo = {
-    password: "",
-    cPassword: ""
-  }
-  const [user, setUser] = useState(userInfo)
-  const [msg, setMsg] = useState(error)
-
-  const onChangeEventHandler = (event) => {
-    setUser({ ...user, [event.target.name]: event.target.value })
-  }
-
-  const onSubmitEventHandler = async (event) => {
-    event.preventDefault()
-    console.log(user);
-    // -----------Clientside user validation-------------
-    let isError = false;
-
-    if (validator.isStrongPassword(user.password, { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 }) > 0) {
-      error.password = ""
-    } else {
-      error.password = "Please enter 8 digit strong Password"
-      isError = true
-    }
-    if (user.cPassword === user.password) {
-      error.cPassword = ""
-    } else {
-      error.cPassword = "Passwords did not match"
-      isError = true
-    }
-    if (isError) {
-      setMsg((prevValue) => {
-        //  console.log("prev: ",error);
-        return ({ ...error })
-      })
-    }
-    else {
-      //-----------Calling backend api---------------
-      try {
-        const response = await fetch(`http://localhost:8000/users/${userId}/changePassword/${resetPasswordToken}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(user)
-        });
-        const jsonResponse = await response.json()
-        console.log(jsonResponse);
-        if (jsonResponse.msg) {
-          error.errorMsg = ""
-          setMsg(error)
-          props.showAlert("Password has been changed Successfully","success");
-          navigate(`/login?msg=${jsonResponse.msg}`)
-        } else {
-          error.errorMsg = jsonResponse.error
-          setMsg(error)
-          props.showAlert(jsonResponse.error,"danger");
-        }
-      } catch (error) {
-        console.log(error);
+  const onSubmitEventHandler = async (values) => {
+    try {
+      const response = await fetch(`http://localhost:8000/users/${userId}/changePassword/${resetPasswordToken}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+      if (jsonResponse.msg) {
+        message.success(jsonResponse.msg);
+        navigate(`/login?msg=${jsonResponse.msg}`);
+      } else {
+        message.error(jsonResponse.error);
       }
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
+  const validatePassword = (_, value) => {
+    if (validator.isStrongPassword(value, { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })) {
+      return Promise.resolve();
+    }
+    return Promise.reject("Please enter a strong password with at least 8 characters, one uppercase letter, one number, and one special character");
+  };
 
-
-
+  const validateConfirmPassword = (_, value) => {
+    const { getFieldValue } = form;
+    if (value === getFieldValue("password")) {
+      return Promise.resolve();
+    }
+    return Promise.reject("Passwords do not match");
+  };
 
   return (
-    <>
-      <Header alert={props.alert} />
-      <div className='content-warapper'>
-        <div className="d1resetpass" >
-          <div className='quote'>
-            <h4 className='quote'>Welcome</h4>
-            <span > We exist to make entrepreneurship easier.</span>
-          </div>
+    <Layout className="layout">
+      <HeaderAuth />
+      <div className="row center-row" style={{ backgroundColor: "white" }}>
+        <div className="column d1c">
+          <FloatButton icon={<QuestionCircleOutlined />} type="primary" style={{ left: 25 }} />
         </div>
-        <div className="d2" >
+        <div className="column">
           <div className="card">
+            <div className="quote">
+              <h4 className="quote">Welcome</h4>
+              <span>We exist to make entrepreneurship easier.</span>
+            </div>
             <div className="card-body py-5 px-md-5">
-              <form onSubmit={onSubmitEventHandler}>
-                <header className='card-heading'>Reset Password</header>
-                <div className="form-outline mb-3">
-                  <input className="form-control form-control-lg " type="password" name='password' placeholder='Enter 8 digit password' id='form3Example3' onChange={onChangeEventHandler} />
-                  <label className="form-label" htmlFor="form3Example3"> <i className="fas fa-lock"></i> &nbsp; Password</label>
-                  <div>  <span className="error" id='errorPassword'>{msg.password}</span></div>
-                </div>
-                <div className="form-outline mb-3">
-                  <input className="form-control form-control-lg" type="password" name='cPassword' placeholder='Enter confirm password' id='form3Example3' onChange={onChangeEventHandler} />
-                  <label className="form-label" htmlFor="form3Example3"> <i className="fas fa-lock"></i> &nbsp; Confirm Password</label>
-                  <div>  <span className="error" id='errorCPassword'>{msg.cPassword}</span></div>
-                </div>
-                <div className="text-center text-lg-start  pt-2">
-                  <button type="submit" className="btn btn-primary btn-lg "
-                    style={{ PaddingLeft: "2.5rem", PaddingRight: "2.5rem" }}
-                  >Change Password</button>
+              <Form form={form} onFinish={onSubmitEventHandler}>
+                <header className="card-heading">Reset Password</header>
+                <Form.Item name="password" rules={[{ required: true, message: "Please enter a password" }, { validator: validatePassword }]}>
+                  <Input.Password prefix={<i className="fas fa-lock" />} placeholder="Enter a strong password" />
+                </Form.Item>
+                <Form.Item
+                  name="cPassword"
+                  rules={[{ required: true, message: "Please confirm your password" }, { validator: validateConfirmPassword }]}
+                >
+                  <Input.Password prefix={<i className="fas fa-lock" />} placeholder="Confirm your password" />
+                </Form.Item>
+                <div className="text-center text-lg-start pt-2">
+                  <Button type="primary" htmlType="submit" style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}>
+                    Change Password
+                  </Button>
                 </div>
                 <div className="d-flex justify-content-between align-items-center">
-                  <p className="medium fw-bold mt-2 pt-1 mb-0">Back to login? <NavLink to="/login"
-                    className="link-danger"> &nbsp; Login</NavLink></p>
+                  <p className="medium fw-bold mt-2 pt-1 mb-0">
+                    Back to login?{" "}
+                    <NavLink to="/login" className="link-danger">
+                      &nbsp; Login
+                    </NavLink>
+                  </p>
                 </div>
-              </form>
+              </Form>
             </div>
           </div>
         </div>
-        <Footer />
       </div>
-    </>
-  )
-}
+      <FooterAuth />
+    </Layout>
+  );
+};
 
-export default ChangePassword
+export default ChangePassword;

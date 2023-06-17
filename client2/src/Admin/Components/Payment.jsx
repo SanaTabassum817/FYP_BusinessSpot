@@ -1,8 +1,9 @@
 import React, {  useEffect } from "react";
-import { Form, Button, Divider, Radio, Input } from "antd";
+import { Form, Button, Divider, Radio, Input ,message} from "antd";
 import axios from "axios";
 import "../../Shared/styles/PaymentPage.css"; // Import the CSS file for styling
 import { useCartContext } from "../Context/cart_Context";
+import ErrorPage from "./ErrorPage";
 
 const PaymentPage = () => {
  
@@ -13,6 +14,7 @@ const PaymentPage = () => {
     SaveUserOrders();
   }, []);
 
+ 
   const SaveUserOrders = async (paymentMethod) => {
     try {
       console.log("Sending request to save order at backend with data : ", cart, totalAmount + shippingFee, shippingFee, userData, paymentMethod);
@@ -23,6 +25,11 @@ const PaymentPage = () => {
         { withCredentials: true }
       );
       console.log("Response from backend", response.data);
+      if(response.data)
+      {
+        message.success("Your order is confirmed");
+      }
+     
     } catch (error) {
       console.log("Error occurred.", error);
     }
@@ -31,7 +38,21 @@ const PaymentPage = () => {
   const onFinish = (values) => {
     console.log("Form values payment:", values);
 
-    if (values.paymentMethod === "cashOnDelivery") {
+    if (cart.length === 0) {
+      message.warning("Your cart is empty. Please add items to your cart.");
+      return;
+    } 
+    if (!userData.fullName || !userData.email || !userData.phoneNumber || !userData.address) {
+      message.error("Please provide complete shipping details");
+      return;
+    }
+
+    if (!values.paymentMethod) {
+      message.error("Please select a payment method");
+      return;
+    }
+  
+    if (values.paymentMethod === "COD") {
       SaveUserOrders("COD");
     } else if (values.paymentMethod === "bankTransfer") {
       SaveUserOrders("bankTransfer");
@@ -66,9 +87,9 @@ const PaymentPage = () => {
         <h3>Payment Methods</h3>
         <Divider />
         <Form onFinish={onFinish}>
-          <Form.Item name="paymentMethod" initialValue="cashOnDelivery" rules={[{ required: true, message: "Please select a payment method" }]}>
+          <Form.Item name="paymentMethod" initialValue="COD" rules={[{ required: true, message: "Please select a payment method" }]}>
             <Radio.Group>
-              <Radio value="cashOnDelivery">Cash on Delivery</Radio>
+              <Radio value="COD">Cash on Delivery</Radio>
               <Radio value="bankTransfer">Bank Transfer</Radio>
               {/* Add more payment method options here */}
             </Radio.Group>

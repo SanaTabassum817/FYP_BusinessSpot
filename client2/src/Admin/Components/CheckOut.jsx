@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Table, Divider, Select } from "antd";
+import { Form, Input, Button, Table, Divider, Select,message } from "antd";
 import { useCartContext } from "../Context/cart_Context";
 import axios from "axios";
 import "../../Shared/styles/CheckoutPage.css"; // Import the CSS file for styling
-import { NavLink } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 const { Option } = Select;
 
 const CheckoutPage = () => {
   const { cart, totalAmount, shippingFee, userData, setUserData } = useCartContext();
-
+  const navigate=useNavigate();
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -45,13 +45,21 @@ const CheckoutPage = () => {
   };
 
   const onFinish = (values) => {
-    // Process the form submission (e.g., place the order)
+   
+    if (cart.length === 0) {
+      message.warning("Your cart is empty. Please add items to your cart.");
+      return;
+    }
+    console.log("Form values:", values);
+    if (!values.fullName || !values.email ||!values.phoneNumber || !values.address) {
+      message.error("Please provide complete shipping details");
+      return;
+    }
     console.log("Form values:", values);
     setUserData(values);
+    navigate("/payment")
     console.log("onFinish values", values);
-    // Call your backend API to process the order
-
-    // Reset the cart and navigate to a success page or display a success message
+    
   };
 
   const columns = [
@@ -129,7 +137,7 @@ const CheckoutPage = () => {
             label="Full Name"
             name="fullName"
             rules={[{ required: true, message: "Please enter your full name" }]}
-            className="form-item"
+           
             style={{ marginBottom: "5px" }}
           >
             <Input style={{ width: "80%" }} />
@@ -141,7 +149,7 @@ const CheckoutPage = () => {
               { required: true, message: "Please enter your email address" },
               { type: "email", message: "Please enter a valid email address" },
             ]}
-            className="form-item"
+           
             style={{ marginBottom: "5px" }}
           >
             <Input style={{ width: "80%" }} />
@@ -150,7 +158,7 @@ const CheckoutPage = () => {
             label="Phone No"
             name="phoneNumber"
             rules={[{ required: true, message: "Please enter your phone number" }]}
-            className="form-item"
+            
             style={{ marginBottom: "5px" }}
           >
             <Input style={{ width: "80%" }} />
@@ -159,11 +167,11 @@ const CheckoutPage = () => {
             label="Country"
             name="country"
             rules={[{ required: true, message: "Please select your country" }]}
-            className="form-item"
+           
             style={{ marginBottom: "5px" }}
           >
             <Select style={{ width: "80%" }}>
-              <Option value="usa">Pakistan</Option>
+              <Option value="Pakistan">Pakistan</Option>
               {/* Add other countries here */}
             </Select>
           </Form.Item>
@@ -171,7 +179,7 @@ const CheckoutPage = () => {
             label="City"
             name="city"
             rules={[{ required: true, message: "Please select your city" }]}
-            className="form-item"
+            
             style={{ marginBottom: "5px" }}
            
           >
@@ -187,17 +195,17 @@ const CheckoutPage = () => {
             label="Address"
             name="address"
             rules={[{ required: true, message: "Please enter your address" }]}
-            className="form-item"
+           
             style={{ marginBottom: "5px" }}
           >
             <Input.TextArea rows={4} style={{ width: "80%" }} />
           </Form.Item>
           <Form.Item>
-            <NavLink to="/payment">
+           
               <Button type="primary" htmlType="submit" style={{marginLeft:"310px",marginTop:"10px"}} >
                 Continue Payment
               </Button>
-            </NavLink>
+           
           </Form.Item>
         </Form>
       </div>

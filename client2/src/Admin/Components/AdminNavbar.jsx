@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCartOutlined, UserOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Menu, Button } from "antd";
+import { ShoppingCartOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import { Menu } from "antd";
 import { useCartContext } from "../Context/cart_Context";
 import "../../Shared/styles/adminNavbar.css";
 import CategoriesContext from "../Context/CategoriesContext";
@@ -12,14 +12,14 @@ const AdminNavbar = (props) => {
   const navigate = useNavigate();
   const context = useContext(CategoriesContext);
   const { categories } = context; // destructuring
-
+  const defaultCategory = categories.length > 0 ? categories[0].category : '';
   const handleMenuClick = (key) => {
     if (key === "home") {
-      navigate("/home");
+      navigate("/");
     } else if (key === "logout") {
       props.handleLogout();
     } else if (key === "products") {
-      navigate("/categories/:categoryName");
+      navigate(`/categories/${defaultCategory}`);
     }
   };
 
@@ -32,14 +32,10 @@ const AdminNavbar = (props) => {
           </h3>
           <div className="subItems">
             <Menu.Item key="home">
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </Menu.Item>
             <Menu.Item key="products">
-              <span>Products</span>
-            </Menu.Item>
-
-            <Menu.Item key="aboutbusiness">
-              <Link to="/aboutus">About us</Link>
+              <Link to={`/categories/${defaultCategory}`}>Products</Link>
             </Menu.Item>
           </div>
           <div className="icons">

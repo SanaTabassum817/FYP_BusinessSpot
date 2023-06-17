@@ -4,8 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { useCookies } from "react-cookie";
 
 import Category from "./Category";
-import Signup from "./Signup";
-import Login from "./Login";
+import AuthForm from "./AuthForm";
 import ErrorPage from "./ErrorPage";
 import VerifyUser from "./VerifyUser";
 import ForgetPassword from "./ForgetPassword";
@@ -19,6 +18,8 @@ import { CartProvider } from "../Context/cart_Context";
 import AddCart from "./AddCart";
 import CheckoutPage from "./CheckOut";
 import PaymentPage from "./Payment";
+import Home from "./Home";
+import userState from "../Context/userAndBusinessSate";
 
 const App = () => {
   //----------------- User Authentication -----------------------
@@ -59,59 +60,45 @@ const App = () => {
     }
   });
 
-  //------------------- States--------------------------------------
-  const [alert, setAlert] = useState(null);
-  const [collapsed, setCollapsed] = useState(false);
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-  //------------------State Handlers---------------
-  const showAlert = (message, type) => {
-    setAlert({
-      msg: message,
-      typ: type,
-    });
-    setTimeout(() => {
-      setAlert(null);
-    }, 8000);
-  };
-
   return (
     <>
-      <ProductState>
-        <CartProvider>
-          <BrowserRouter>
-            {isLoggedin || cookies.jwt ? <AdminNavbar collapsed={collapsed} toggleCollapsed={toggleCollapsed} handleLogout={handleLogout} /> : null}
-            <div className={isLoggedin ? "loggedin-div" : "notLoggedin-div"}>
-              <Routes>
-                <Route path="/signup" element={<Signup alert={alert} showAlert={showAlert} />} />
-                <Route path="/login" element={<Login alert={alert} handleLogin={handleLogin} showAlert={showAlert} />} />
-                <Route path="/users/:userId/verify/:verificationToken" element={<VerifyUser />} />
-                <Route path="/forgetPassword" element={<ForgetPassword alert={alert} showAlert={showAlert} />} />
-                <Route path="/users/:userId/changePassword/:resetPasswordToken" element={<ChangePassword alert={alert} showAlert={showAlert} />} />
-                {isLoggedin || cookies.jwt ? (
-                  <>
-                    <Route path="/categories/:categoryName" element={<Category />} />
-                    <Route path="/userAbout" element={<UserProfile />} />
-                    <Route path="/cart" element={<AddCart />} />
-                    <Route path="/checkout" element={<CheckoutPage />} />
-                    <Route path="/payment" element={<PaymentPage />} />
-                  </>
-                ) : (
-                  <>
-                    <Route path="/categories/:categoryName" element={<Navigate to="/login" replace />} />
-                    <Route path="/userAbout" element={<Navigate to="/login" replace />} />
-                    <Route path="/cart" element={<Navigate to="/login" replace />} />
-                    <Route path="/checkout" element={<Navigate to="/login" replace />} />
-                    <Route path="/payment" element={<Navigate to="/login" replace />} />
-                  </>
-                )}
-                <Route path="/*" element={<ErrorPage />} />
-              </Routes>
-            </div>
-          </BrowserRouter>
-        </CartProvider>
-      </ProductState>
+      <userState>
+        <ProductState>
+          <CartProvider>
+            <BrowserRouter>
+              {isLoggedin || cookies.jwt ? <AdminNavbar handleLogout={handleLogout} /> : null}
+              <div className={isLoggedin ? "loggedin-div" : "notLoggedin-div"}>
+                <Routes>
+                  <Route path="/login" element={<AuthForm handleLogin={handleLogin} />} />
+                  <Route path="/users/:userId/verify/:verificationToken" element={<VerifyUser />} />
+                  <Route path="/forgetPassword" element={<ForgetPassword />} />
+                  <Route path="/users/:userId/changePassword/:resetPasswordToken" element={<ChangePassword />} />
+                  {isLoggedin || cookies.jwt ? (
+                    <>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/categories/:categoryName" element={<Category />} />
+                      <Route path="/userAbout" element={<UserProfile />} />
+                      <Route path="/cart" element={<AddCart />} />
+                      <Route path="/checkout" element={<CheckoutPage />} />
+                      <Route path="/payment" element={<PaymentPage />} />
+                    </>
+                  ) : (
+                    <>
+                      <Route path="/" element={<Navigate to="/login" replace />} />
+                      <Route path="/categories/:categoryName" element={<Navigate to="/login" replace />} />
+                      <Route path="/userAbout" element={<Navigate to="/login" replace />} />
+                      <Route path="/cart" element={<Navigate to="/login" replace />} />
+                      <Route path="/checkout" element={<Navigate to="/login" replace />} />
+                      <Route path="/payment" element={<Navigate to="/login" replace />} />
+                    </>
+                  )}
+                  <Route path="/*" element={<ErrorPage />} />
+                </Routes>
+              </div>
+            </BrowserRouter>
+          </CartProvider>
+        </ProductState>
+      </userState>
     </>
   );
 };

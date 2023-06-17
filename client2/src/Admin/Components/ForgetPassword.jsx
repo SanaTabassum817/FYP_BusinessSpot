@@ -1,114 +1,89 @@
-import React, { useState } from 'react'
-import validator from 'validator'
-import { NavLink } from 'react-router-dom'
-import Footer from './Footer'
-import Header from './Header'
-import "../../Shared/styles/forgetPassword.css"
+import React, { useState } from "react";
+import { Form, Input, Button, Layout, message } from "antd";
+import { NavLink } from "react-router-dom";
+import "../../Shared/styles/authForm.css";
+import HeaderAuth from "./HeaderAuth";
+import FooterAuth from "./Footer";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 const ForgetPassword = (props) => {
-  const error = {
-    email: "",
-    errorMsg: "",
-    successMsg: ""
-  }
-  const userInfo = {
-    email: ""
-  }
-  const [user, setUser] = useState(userInfo)
-  const [msg, setMsg] = useState(error)
+  const [form] = Form.useForm();
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const onChangeEventHandler = (event) => {
-    setUser({ [event.target.name]: event.target.value })
-  }
-
-  const onSubmitEventHandler = async (event) => {
-    event.preventDefault()
-    if (user.email.length === 0) {
-      error.email = "Please enter a valid email address"
-      setMsg((prevValue) => {
-        return ({
-          ...error
-        })
-      })
-      console.log(msg);
-    }
-    else {
-      if (!validator.isEmail(user.email)) {
-        error.email = "Please enter a valid email address"
-        setMsg((prevValue) => {
-          return ({
-            ...error
-          })
-        })
+  const onFinish = async (values) => {
+    try {
+      const response = await fetch("http://localhost:8000/forgetPassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+      if (jsonResponse.msg) {
+        message.success(jsonResponse.msg);
+        setIsSuccess(true);
       } else {
-        error.email = ""
-        //calling backend api 
-        const response = await fetch("http://localhost:8000/forgetPassword", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(user)
-        });
-        const jsonResponse = await response.json()
-        console.log(jsonResponse);
-        if (jsonResponse.msg) {
-          error.errorMsg = ""
-          error.successMsg = jsonResponse.msg
-          setMsg(error)
-          props.showAlert( jsonResponse.msg, "success")
-        } else {
-          error.errorMsg = jsonResponse.error
-          error.successMsg = ""
-          setMsg(error)
-          props.showAlert(jsonResponse.error, "danger")
-        }
+        message.error(jsonResponse.error);
+        setIsSuccess(false);
       }
+    } catch (error) {
+      console.log(error);
     }
-
-
-  }
+  };
 
   return (
     <>
-      <Header alert={props.alert} />
-      <div className='content-warapper'>
-      <div className="d2" >
-        <div className="card">
-          <div className="card-body py-5 px-md-5">
-            <form onSubmit={onSubmitEventHandler}>
-              <header className='card-heading'>Forget Password</header>
-              <div className="form-outline mb-3">
-                <input className="form-control form-control-lg" type="text" name='email' placeholder='Enter a valid email' id='form3Example4' onChange={onChangeEventHandler} />
-                <label className="form-label" htmlFor="form3Example4"> <i className="fas fa-envelope"></i>&nbsp; Email Address</label>
-                <div> <span className="error" id='erroremail'>{msg.email}</span></div>
+      <Layout className="layout">
+        <HeaderAuth />
+        <div className="row center-row" style={{ backgroundColor: "white" }}>
+          <div className="column d1f">
+            <Button icon={<QuestionCircleOutlined />} type="primary" style={{ left: 25 }} />
+          </div>
+          <div className="column">
+            <div className="card">
+              <div className="quote">
+                <h4 className="quote">Welcome</h4>
+                <span>We exist to make entrepreneurship easier.</span>
               </div>
-
-              <div className="text-center text-lg-start  pt-2">
-                <button type="submit" className="btn btn-primary btn-lg "
-                  style={{ PaddingLeft: "2.5rem", PaddingRight: "2.5rem" }}
-                >Send Email</button>
+              <div className="card-body py-5 px-md-5">
+                <Form form={form} onFinish={onFinish}>
+                  <header className="card-heading">Forget Password</header>
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      { required: true, message: "Please enter a valid email address" },
+                      { type: "email", message: "Please enter a valid email address" },
+                    ]}
+                    hasFeedback
+                    validateStatus={isSuccess ? "success" : ""}
+                  >
+                    <Input prefix={<i className="fas fa-envelope" />} placeholder="Enter a valid email" />
+                  </Form.Item>
+                  <div className="text-center text-lg-start pt-2">
+                    <Button type="primary" htmlType="submit" style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}>
+                      Send Email
+                    </Button>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <p className="medium fw-bold mt-2 pt-1 mb-0">
+                      Back to login?{" "}
+                      <NavLink to="/login" className="link-danger">
+                        {" "}
+                        Login
+                      </NavLink>
+                    </p>
+                  </div>
+                </Form>
               </div>
-
-              <div className="d-flex justify-content-between align-items-center">
-                <p className="medium fw-bold mt-2 pt-1 mb-0"> Back to login? <NavLink to="/login"
-                  className="link-danger">&nbsp; Login</NavLink></p>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
-        
-      </div>
-      <div className="d1forget" >
-        <div className='quote'>
-          <h4 className='quote'>Welcome</h4>
-          <span > We exist to make entrepreneurship easier.</span>
-        </div>
-      </div>
-      <Footer />
-      </div>
+        <FooterAuth />
+      </Layout>
     </>
-  )
-}
+  );
+};
 
-export default ForgetPassword
+export default ForgetPassword;

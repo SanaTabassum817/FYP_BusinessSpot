@@ -1,13 +1,13 @@
 import React from "react";
-import { Table, Button, Divider } from "antd";
+import { Table, Button, Divider,message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useCartContext } from "../Context/cart_Context";
 import CartAmountToggle from "./CartAmountToggle";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const { cart, removeItem, clearCart, setDecrease, setIncrease, totalAmount, shippingFee } = useCartContext();
-
+  const navigate = useNavigate();
   const columns = [
     {
       title: "Item",
@@ -60,6 +60,13 @@ const CartPage = () => {
 
   const finalTotal = totalAmount + shippingFee; // Calculate the final total
 
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      message.warning("Your cart is empty. Please add items to your cart.");
+    } else {
+      navigate('/checkout')
+    }
+  };
   return (
     <>
       <div style={{ padding: "16px", width: "100%", marginLeft:"20px" ,marginRight:"20px", overflowY: "auto" }}>
@@ -100,11 +107,12 @@ const CartPage = () => {
             showHeader={false}
           />
           <br />
-          <NavLink to="/checkout">
-            <Button type="primary" style={{ marginLeft: "5px" }}>
+          
+         
+            <Button type="primary" style={{ marginLeft: "5px" }} onClick={handleCheckout}>
               Checkout
             </Button>
-          </NavLink>
+       
         </div>
       </div>
     </>

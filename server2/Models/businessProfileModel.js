@@ -1,25 +1,25 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const userProfileModel = new mongoose.Schema(
+const businessProfileModel = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    name: {
+    businessName: {
       type: String,
     },
-   profession: {
+    businessTagline: {
       type: String,
     },
-    about: {
+    businessDescription: {
       type: String,
     },
-    email: {
+    businessEmail: {
       type: String,
-      
-     
+      unique: true,
+      required: true,
       trim: true,
       lowercase: true,
       validate: {
@@ -27,18 +27,32 @@ const userProfileModel = new mongoose.Schema(
         message: "Not a valid email.",
       },
     },
-   address: {
+    businessAddress: {
       type: String,
     },
-    contactNumber: {
+    bContactNumber: {
       type: String,
     },
-    
-    image: {
+    youtube: {
+      type: String,
+    },
+    linkedIn: {
+      type: String,
+    },
+    twitter: {
+      type: String,
+    },
+    instagram: {
+      type: String,
+    },
+    facebook: {
+      type: String,
+    },
+    logoImage: {
       type: String,
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("UserProfile", userProfileModel);
+module.exports = mongoose.model("BusinessProfile", businessProfileModel);

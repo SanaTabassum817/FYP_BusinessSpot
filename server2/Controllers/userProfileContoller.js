@@ -1,5 +1,5 @@
 const UserProfile = require('../Models/userProfileModel');
-const user=require('../Models/userModel');
+
 
 // 1. Get user profile info
 const getUser = async (req, res) => {
@@ -10,7 +10,7 @@ const getUser = async (req, res) => {
 
     if (!userProfile) {
       // Call the addUserProfile function to create a new user profile
-      return addUserProfile(req, res); // Pass the response object to the addUserProfile function
+      return addUser(req, res); // Pass the response object to the addUserProfile function
     }
 
     res.send(userProfile);
@@ -31,7 +31,6 @@ const updateUser = async (req, res) => {
     contactNumber,
     image,
   } = req.body;
-  
 
   const userId = req.user._id;
 
@@ -45,22 +44,15 @@ const updateUser = async (req, res) => {
     userProfile.name = name || userProfile.name;
     userProfile.profession = profession || userProfile.profession;
     userProfile.about = about || userProfile.about;
-    userProfile.email = email || userProfile.email;
+
+    // Only update the email field if it is provided
+    if (email) {
+      userProfile.email = email;
+    }
+
     userProfile.address = address || userProfile.address;
     userProfile.contactNumber = contactNumber || userProfile.contactNumber;
     userProfile.image = image || userProfile.image;
-    
- // Validate the image field
- if (Array.isArray(image)) {
-  userProfile.image = null;
-} else {
-  userProfile.image = image;
-}
-    // Check if file is uploaded
-    if (req.file) {
-      // Save the file path or perform further processing as needed
-      userProfile.image = req.file.path;
-    }
 
     userProfile = await userProfile.save();
 
@@ -87,17 +79,23 @@ const addUser = async (req, res) => {
     
     const user = req.user;
     
-    const userProfile = new UserProfile({
+    let userProfile = await UserProfile.findOne({ email });
+
+    if (userProfile) {
+      // User profile with the same email already exists
+      return res.status(400).send({ error: "User profile with this email already exists." });
+    }
+    
+    userProfile = new UserProfile({
       user,
       name,
       profession,
       about,
-      email: user.email, // Use email from User model
+      email,
       address,
       contactNumber,
       image,
     });
-    
 
     const result = await userProfile.save();
 
@@ -111,6 +109,7 @@ const addUser = async (req, res) => {
     res.status(500).send({ error: "User profile could not be saved due to some error." });
   }
 };
+
 
 module.exports = {
   getUser,

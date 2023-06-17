@@ -1,6 +1,14 @@
 import React from 'react';
-const ErrorPage=()=>{
-    return(
-        <h1>404. Page not found</h1>
-    )}
-export default ErrorPage
+import { Button, Result } from 'antd';
+
+const ErrorPage= () => (
+    <Result
+    status="500"
+    title="500"
+    subTitle="Sorry, something went wrong."
+    extra={<Button type="primary">Back Home</Button>}
+  />
+ 
+);
+
+export default ErrorPage;
