@@ -28,7 +28,7 @@ router.put("/updateUser",middleware.userAuthentication,uploadImage.single('image
 router.post("/addUser",middleware.userAuthentication,userProfileController.addUser)
 // get business profile data
 router.get("/getBusinessInfo",middleware.userAuthentication,businessProfileController.getBusinessInfo)
-
+// router.get("/getBusinessInfo",businessProfileController.getBusinessInfo)
 
 
 module.exports = router;

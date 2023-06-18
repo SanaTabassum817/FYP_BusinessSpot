@@ -19,7 +19,7 @@ import AddCart from "./AddCart";
 import CheckoutPage from "./CheckOut";
 import PaymentPage from "./Payment";
 import Home from "./Home";
-import userState from "../Context/userAndBusinessSate";
+
 
 const App = () => {
   //----------------- User Authentication -----------------------
@@ -62,7 +62,7 @@ const App = () => {
 
   return (
     <>
-      <userState>
+     
         <ProductState>
           <CartProvider>
             <BrowserRouter>
@@ -98,7 +98,7 @@ const App = () => {
             </BrowserRouter>
           </CartProvider>
         </ProductState>
-      </userState>
+     
     </>
   );
 };

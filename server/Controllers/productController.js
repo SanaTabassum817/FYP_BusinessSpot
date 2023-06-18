@@ -13,6 +13,17 @@ const getProductsByCategory = async (req, res) => {
       res.status(500).send({error:`Error in fetching products of ${productCategory}`});
     }
   };
+  const getProductByID = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const products = await productModel.findOne({ productID: id });
+      res.json(products);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send({ error: `Error in fetching products of ${id}` });
+    }
+  };
+  
   
 // 2 to get all products
 const getAllProducts=async(req,res)=>{
@@ -121,3 +132,4 @@ module.exports.getAllProducts=getAllProducts;
 module.exports.deleteProduct=deleteProduct;
 module.exports.updateProduct=updateProduct;
 module.exports.getProductsByCategory=getProductsByCategory;
+module.exports.getProductByID=getProductByID;

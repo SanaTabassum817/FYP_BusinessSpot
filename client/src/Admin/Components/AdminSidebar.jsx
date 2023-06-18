@@ -47,7 +47,7 @@ const AdminSidebar= (props) => {
             getItem(category.category, index)
         )),
         getItem('Orders', 'orders',<OrderedListOutlined />),
-        getItem('businessProfile', 'businessProfile',<UserOutlined />),
+        getItem('BusinessProfile', 'businessProfile',<UserOutlined />),
         getItem('Logout', 'logout',<LogoutOutlined />),
        
     ];

@@ -14,8 +14,10 @@ router.delete("/deleteProduct/:id",middleware.userAuthentication,productControll
 router.put("/updateProduct/:id",middleware.userAuthentication,productController.updateProduct);
 //  ROUTE 5 :get product by category using 
 router.get("/getProductsByCategory/:productCategory",middleware.userAuthentication,productController.getProductsByCategory);
+// get by id
+// router.get("/getProductByID/:id",middleware.userAuthentication,productController.getProductByID);
 
-
+router.get("/getProductByID/:id",productController.getProductByID);
 
 
 
