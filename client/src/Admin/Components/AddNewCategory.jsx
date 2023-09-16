@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import {  Form, Input,Modal} from 'antd';
 import CategoriesContext from "../Context/CategoriesContext";
 const AddNewCategory=(props)=>{
-
-  const context = useContext(CategoriesContext);
+ const context = useContext(CategoriesContext);
   const { addCategory } = context; // destructuring
   const [form] = Form.useForm();
     
